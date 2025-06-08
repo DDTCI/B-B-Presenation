@@ -18,12 +18,11 @@
 			}
 			.reveal {
 				font-family: 'Montserrat', sans-serif;
-				position: relative;
-				overflow: hidden;
 				background-color: var(--tci-charcoal);
 			}
-			.reveal .slides {
-				background: transparent;
+			/* This makes sure slides with backgrounds are positioned correctly */
+			.reveal .slides section {
+				position: relative;
 				text-align: center;
 			}
 			.reveal h1, .reveal h2, .reveal h3, .reveal h4 {
@@ -31,48 +30,30 @@
 				position: relative;
 				z-index: 10;
 			}
-			.grid-lines-horizontal,
-			.grid-lines-vertical {
+			/* --- Grid Styles --- */
+			.grid-background {
 				position: absolute;
 				top: 0; left: 0; width: 100%; height: 100%;
 				z-index: 0;
-			}
-			.grid-lines-horizontal {
-				background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+				background-image: 
+					linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+					linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
 				background-size: 80px 80px;
-				transform: translateY(-100%);
-				transition: transform 2.5s ease-out;
-			}
-			.grid-lines-vertical {
-				/* FIXED THE TYPO HERE: Was '1', now '0.1' */
-				background-image: linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-				background-size: 80px 80px;
-				transform: translateX(-100%);
-				transition: transform 2.5s ease-out 0.8s;
-			}
-			.run-grid-animation .grid-lines-horizontal,
-			.run-grid-animation .grid-lines-vertical {
-				transform: translate(0, 0);
 			}
 
-			/* --- Global Logo Container --- */
+			/* --- Logo Styles (Two States) --- */
+			
+			/* This is the default state: large and centered for the title slide */
 			.logo-container {
-				/* This is the INITIAL state: centered, large, and invisible */
-				position: absolute;
-				top: 50%;
-				left: 50%;
-				width: 100%;
-				transform: translate(-50%, -50%);
-				z-index: 10;
 				display: flex;
 				justify-content: center;
 				align-items: center;
-				/* This will animate all changes when a class is added/removed */
-				transition: all 1s ease-in-out;
+				width: 100%;
+				margin-top: 40px;
 			}
 			.logo-container .logo-image {
 				height: 150px;
-				width: auto; /* This fixes the squashed logo */
+				width: auto;
 				filter: brightness(0) invert(1);
 			}
 			.logo-container .logo-separator {
@@ -82,43 +63,53 @@
 				margin: 0 60px;
 			}
 			
-			/* --- Animation States --- */
-			
-			/* 1. The Opening Animation State */
-			.run-opening-animation .logo-container {
-				opacity: 1; /* Fades the container in */
-			}
-
-			/* 2. The Final Corner State (triggered by JS) */
-			.logos-in-corner .logo-container {
+			/* This is the MODIFIER class for the corner state */
+			.logo-container.corner {
+				position: absolute;
 				top: 40px;
 				left: 40px;
-				width: auto;
-				transform: translate(0, 0); /* Move to corner */
-				flex-direction: column; /* Stack logos */
+				width: auto; /* Allow container to shrink */
+				flex-direction: column;
 				align-items: flex-start;
+				margin-top: 0;
 			}
-			.logos-in-corner .logo-image {
-				height: 40px; /* Shrink logos */
-				transition: height 1s ease-in-out;
+			.logo-container.corner .logo-image {
+				height: 40px;
 			}
-			.logos-in-corner .logo-separator {
-				display: none; /* Hide the 'x' */
+			.logo-container.corner .logo-separator {
+				display: none;
+			}
+			
+			/* --- Navigation Arrow Fix --- */
+			.reveal .controls-arrow,
+			.reveal .controls-arrow:before {
+				border-color: var(--tci-white) !important;
 			}
 
 		</style>
 	</head>
 	<body>
 		<div class="reveal">
-			<div class="grid-lines-horizontal"></div>
-			<div class="grid-lines-vertical"></div>
-			<div class="logo-container" style="opacity: 0;"></div>
-			
 			<div class="slides">
-				<section>
+				
+				<section data-auto-animate>
+					<div class="grid-background"></div>
 					<h1>Project Proposition</h1>
+					<div class="logo-container">
+						<img data-id="tci-logo" src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
+						<span data-id="x-separator" class="logo-separator">x</span>
+						<img data-id="bb-logo" src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
+					</div>
 				</section>
-				<section>
+
+				<section data-auto-animate>
+					<div class="grid-background"></div>
+					<div data-id="logo-container" class="logo-container corner">
+						<img data-id="tci-logo" src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
+						<span data-id="x-separator" class="logo-separator">x</span>
+						<img data-id="bb-logo" src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
+					</div>
+
 					<h2>Agenda</h2>
 					<p>Next, we'll build out the agenda or introduction slide here.</p>
 				</section>
@@ -127,40 +118,12 @@
 
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
 		<script>
+			// MODIFIED: Enable the auto-animate feature
 			Reveal.initialize({
 				hash: true,
-				transition: 'slide',
-				plugins: []
+				autoAnimate: true, // This is the magic setting
+				transition: 'slide'
 			});
-
-			// Clone the logos from the HTML to be managed by JS
-			const logoContainer = document.querySelector('.logo-container');
-			const logoContent = `
-				<img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
-				<span class="logo-separator">x</span>
-				<img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">`;
-			logoContainer.innerHTML = logoContent;
-
-
-			// Trigger the initial "welcome" animation
-			setTimeout(function() {
-				document.body.classList.add('run-grid-animation');
-				document.body.classList.add('run-opening-animation');
-			}, 500);
-
-
-			// Listen for slide change events to move the logos
-			Reveal.on('slidechanged', event => {
-				// event.indexh is the horizontal index of the current slide
-				if (event.indexh > 0) {
-					// If we are on any slide AFTER the first one, add the corner class
-					document.body.classList.add('logos-in-corner');
-				} else {
-					// If we navigate back to the first slide, remove the class
-					document.body.classList.remove('logos-in-corner');
-				}
-			});
-
 		</script>
 	</body>
 </html>
