@@ -4,12 +4,14 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 		<title>TCI Culinary Proposition for Black + Blum</title>
+		<!-- Stylesheets -->
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reset.min.css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/black.css" id="theme">
+		<!-- Custom Styles -->
 		<style>
 			:root {
 				--tci-white: #FFFFFF;
@@ -35,7 +37,7 @@
 				color: var(--tci-orange);
 				position: relative;
 				z-index: 2;
-				/* Added transition for the fade-out effect */
+				/* Add transition for the fade-out effect */
 				transition: opacity 0.8s ease-out;
 			}
 			.reveal h2, .reveal h3, .reveal h4 {
@@ -43,16 +45,12 @@
 				position: relative;
 				z-index: 2;
 			}
-
 			/* --- Grid Styles & Animation --- */
 			.grid-lines-horizontal,
 			.grid-lines-vertical {
 				content: '';
 				position: absolute;
-				top: 0;
-				left: 0;
-				width: 100%;
-				height: 100%;
+				top: 0; left: 0; width: 100%; height: 100%;
 				z-index: 0;
 			}
 			.grid-lines-horizontal {
@@ -67,11 +65,10 @@
 				transform: translateY(-100%);
 				transition: transform 1.5s ease-out 0.5s;
 			}
-			.run-opening-animation .grid-lines-horizontal,
-			.run-opening-animation .grid-lines-vertical {
+			.run-animation .grid-lines-horizontal,
+			.run-animation .grid-lines-vertical {
 				transform: translate(0, 0);
 			}
-
 			/* --- Logo Styles & Animations --- */
 			.logo-container {
 				display: flex;
@@ -83,7 +80,7 @@
 				opacity: 0;
 				transition: opacity 1.5s ease-in 2s;
 			}
-			.run-opening-animation .logo-container {
+			.run-animation .logo-container {
 				opacity: 1;
 			}
 			.logo-image {
@@ -97,12 +94,13 @@
 				font-weight: 700;
 				margin: 0 60px;
 				opacity: 0;
+				/* Set intro animation to run once */
 				animation: spin-and-settle 2s ease-in-out 2s forwards;
 			}
 			@keyframes spin-and-settle {
-				0% { opacity: 0; transform: rotate(-180deg); }
-				70% { opacity: 1; transform: rotate(380deg); }
-				85% { transform: rotate(355deg); }
+				0%   { opacity: 0; transform: rotate(-180deg); }
+				70%  { opacity: 1; transform: rotate(380deg); }
+				85%  { transform: rotate(355deg); }
 				100% { opacity: 1; transform: rotate(360deg); }
 			}
 
@@ -115,11 +113,10 @@
 				align-items: flex-start;
 			}
 			.corner-logos .logo-image { height: 40px; }
-
+			
 			/* --- Navigation Arrow Fix --- */
 			.reveal .controls .controls-arrow { border-color: var(--tci-white) !important; }
-
-
+			
 			/* --- NEW: Outro Animations for Slide 1 --- */
 			
 			/* When the first slide becomes a 'past' slide, trigger these styles */
@@ -129,20 +126,16 @@
 			}
 
 			.reveal .slides section.past .logo-separator {
-				/* Apply the new spin-out animation */
-				animation: spin-out 1s ease-in forwards;
+				/* Apply the new reverse-spin animation */
+				animation: spin-out-reverse 1.5s ease-in forwards;
 			}
 
-			/* This is the new animation for the 'x' to spin and fade out */
-			@keyframes spin-out {
-				from {
-					opacity: 1;
-					transform: rotate(360deg);
-				}
-				to {
-					opacity: 0;
-					transform: rotate(720deg);
-				}
+			/* This is the new animation for the 'x' to spin OUT in reverse */
+			@keyframes spin-out-reverse {
+				0%   { opacity: 1; transform: rotate(360deg); }
+				15%  { transform: rotate(355deg); }
+				30%  { transform: rotate(380deg); }
+				100% { opacity: 0; transform: rotate(-180deg); }
 			}
 
 		</style>
@@ -151,17 +144,23 @@
 		<div class="reveal">
 			<div class="slides">
 				
+				<!-- SLIDE 1 -->
 				<section>
 					<div class="grid-lines-horizontal"></div>
 					<div class="grid-lines-vertical"></div>
 					<h1>Project Proposition</h1>
 					<div class="logo-container">
-						<img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
+						<div class="logo-wrapper">
+							<img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
+						</div>
 						<span class="logo-separator">x</span>
-						<img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
+						<div class="logo-wrapper">
+							<img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
+						</div>
 					</div>
 				</section>
 
+				<!-- SLIDE 2 -->
 				<section>
 					<div class="grid-lines-horizontal" style="transform: translate(0,0);"></div>
 					<div class="grid-lines-vertical" style="transform: translate(0,0);"></div>
@@ -183,7 +182,7 @@
 			});
 
 			setTimeout(function() {
-				document.body.classList.add('run-opening-animation');
+				document.body.classList.add('run-animation');
 			}, 200);
 		</script>
 	</body>
