@@ -20,7 +20,6 @@
 				font-family: 'Montserrat', sans-serif;
 				background-color: var(--tci-charcoal);
 			}
-			/* This makes sure slides with backgrounds are positioned correctly */
 			.reveal .slides section {
 				position: relative;
 				text-align: center;
@@ -39,17 +38,29 @@
 					linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
 					linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
 				background-size: 80px 80px;
+				/* Set initial state for opening animation */
+				transform: translateY(-100%);
+				transition: transform 2.5s ease-out;
+			}
+			.run-opening-animation .grid-background {
+				transform: translateY(0);
 			}
 
 			/* --- Logo Styles (Two States) --- */
 			
-			/* This is the default state: large and centered for the title slide */
+			/* Default state for the logo container (large, centered on slide 1) */
 			.logo-container {
 				display: flex;
 				justify-content: center;
 				align-items: center;
 				width: 100%;
 				margin-top: 40px;
+				/* Set initial state for opening animation */
+				opacity: 0;
+				transition: opacity 1.5s ease-in 2.5s;
+			}
+			.run-opening-animation .logo-container {
+				opacity: 1;
 			}
 			.logo-container .logo-image {
 				height: 150px;
@@ -63,15 +74,16 @@
 				margin: 0 60px;
 			}
 			
-			/* This is the MODIFIER class for the corner state */
+			/* Modifier class for the corner state (on slide 2) */
 			.logo-container.corner {
 				position: absolute;
 				top: 40px;
 				left: 40px;
-				width: auto; /* Allow container to shrink */
+				width: auto;
 				flex-direction: column;
 				align-items: flex-start;
 				margin-top: 0;
+				opacity: 1; /* Make sure it's visible in the corner */
 			}
 			.logo-container.corner .logo-image {
 				height: 40px;
@@ -81,8 +93,7 @@
 			}
 			
 			/* --- Navigation Arrow Fix --- */
-			.reveal .controls-arrow,
-			.reveal .controls-arrow:before {
+			.reveal .controls .controls-arrow {
 				border-color: var(--tci-white) !important;
 			}
 
@@ -95,19 +106,19 @@
 				<section data-auto-animate>
 					<div class="grid-background"></div>
 					<h1>Project Proposition</h1>
-					<div class="logo-container">
-						<img data-id="tci-logo" src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
-						<span data-id="x-separator" class="logo-separator">x</span>
-						<img data-id="bb-logo" src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
+					<div data-id="logo-set" class="logo-container">
+						<img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
+						<span class="logo-separator">x</span>
+						<img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
 					</div>
 				</section>
 
 				<section data-auto-animate>
 					<div class="grid-background"></div>
-					<div data-id="logo-container" class="logo-container corner">
-						<img data-id="tci-logo" src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
-						<span data-id="x-separator" class="logo-separator">x</span>
-						<img data-id="bb-logo" src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
+					<div data-id="logo-set" class="logo-container corner">
+						<img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
+						<span class="logo-separator">x</span>
+						<img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
 					</div>
 
 					<h2>Agenda</h2>
@@ -118,12 +129,17 @@
 
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
 		<script>
-			// MODIFIED: Enable the auto-animate feature
+			// Enable the auto-animate feature
 			Reveal.initialize({
 				hash: true,
-				autoAnimate: true, // This is the magic setting
+				autoAnimate: true,
 				transition: 'slide'
 			});
+
+			// Trigger the initial "welcome" animation for the first slide
+			setTimeout(function() {
+				document.body.classList.add('run-opening-animation');
+			}, 500);
 		</script>
 	</body>
 </html>
