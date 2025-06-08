@@ -14,7 +14,6 @@
 			:root {
 				--tci-white: #FFFFFF;
 				--tci-black: #000000;
-				/* MODIFIED: Orange is now set to the white color value */
 				--tci-orange: #FFFFFF; 
 				--tci-charcoal: #1E1C1D;
 			}
@@ -35,14 +34,13 @@
 				position: relative;
 				z-index: 2;
 			}
-			/* make slide titles fadeable on exit */
+			/* fadeable titles */
 			.reveal .slides section h1,
 			.reveal .slides section h2 {
 				transition: opacity 0.5s ease-out;
 			}
 			.grid-lines-horizontal,
 			.grid-lines-vertical {
-				content: '';
 				position: absolute;
 				top: 0;
 				left: 0;
@@ -51,15 +49,13 @@
 				z-index: 0;
 			}
 			.grid-lines-horizontal {
-				/* MODIFIED: RGBA value now uses white (255,255,255) */
-				background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+				background-image: linear-gradient(to bottom, rgba(255,255,255,0.1) 1px, transparent 1px);
 				background-size: 80px 80px;
 				transform: translateY(-100%);
 				transition: transform 2.5s ease-out;
 			}
 			.grid-lines-vertical {
-				/* MODIFIED: RGBA value now uses white (255,255,255) */
-				background-image: linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+				background-image: linear-gradient(to right, rgba(255,255,255,0.1) 1px, transparent 1px);
 				background-size: 80px 80px;
 				transform: translateX(-100%);
 				transition: transform 2.5s ease-out 0.8s;
@@ -68,7 +64,8 @@
 			.run-animation .grid-lines-vertical {
 				transform: translate(0, 0);
 			}
-			/* --- Logo Styles --- */
+
+			/* --- Logo & “x” Styles (no long delay) --- */
 			.logo-container {
 				display: flex;
 				justify-content: center;
@@ -77,10 +74,11 @@
 				position: relative;
 				z-index: 2;
 			}
-			.logo-wrapper {
+			.logo-wrapper,
+			.logo-separator {
 				opacity: 0;
 				transform: scale(0.95);
-				transition: all 1.5s ease-in-out 2.5s;
+				transition: all 0.5s ease-out;
 			}
 			.run-animation .logo-wrapper,
 			.run-animation .logo-separator {
@@ -97,17 +95,12 @@
 				font-size: 80px;
 				font-weight: 700;
 				margin: 0 60px;
-				opacity: 0;
-				transform: scale(0.95);
-				transition: all 1.5s ease-in-out 2.5s;
 			}
 
 			/* --- White Navigation Arrows --- */
 			.reveal .controls-arrow {
-				/* This targets the default theme's arrows */
 				border-color: var(--tci-white) !important;
 			}
-
 		</style>
 	</head>
 	<body>
@@ -136,25 +129,21 @@
 
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
 		<script>
-			// Initialize Reveal.js and trigger entrance animation
+			// 1. Init + entrance
 			Reveal.initialize({ hash: true, plugins: [] });
 			setTimeout(() => document.body.classList.add('run-animation'), 500);
 
-			// Exit animation + navigation helper
+			// 2. Exit animation + navigation helper
 			function exitAndNavigate(direction) {
-				// reverse grid & logo
 				document.body.classList.remove('run-animation');
-				// fade out current title
 				const current = document.querySelector('.slides section.present');
 				const title   = current && current.querySelector('h1, h2');
 				if (title) title.style.opacity = 0;
-
-				// wait for exit animations (grid 2.5s + fade 0.5s ≈ 600ms)
+				// wait for the 0.5s .logo & title transitions
 				setTimeout(() => {
 					if (direction === 'next') Reveal.next();
 					else                     Reveal.prev();
-
-					// re-trigger entrance on the new slide
+					// re-trigger entrance on return
 					setTimeout(() => {
 						document.body.classList.add('run-animation');
 						if (title) title.style.opacity = 1;
@@ -162,7 +151,7 @@
 				}, 600);
 			}
 
-			// Intercept the "next" arrow click on slide 1
+			// 3. Hook the “next” arrow on slide 1
 			document.querySelector('.controls .navigate-right')
 				?.addEventListener('click', e => {
 					const { h, v } = Reveal.getIndices();
@@ -172,7 +161,7 @@
 					}
 				});
 
-			// Also catch Right-Arrow / PageDown keys for slide 1
+			// 4. Also catch Right-Arrow / PageDown
 			document.addEventListener('keydown', e => {
 				if ((e.key === 'ArrowRight' || e.key === 'PageDown')) {
 					const { h, v } = Reveal.getIndices();
