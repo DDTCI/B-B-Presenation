@@ -50,7 +50,8 @@
 				transition: transform 2.5s ease-out;
 			}
 			.grid-lines-vertical {
-				background-image: linear-gradient(to right, rgba(255, 160, 42, 1) 1px, transparent 1px);
+				/* FIXED THE TYPO HERE: Was '1', now '0.1' */
+				background-image: linear-gradient(to right, rgba(255, 160, 42, 0.1) 1px, transparent 1px);
 				background-size: 80px 80px;
 				transform: translateX(-100%);
 				transition: transform 2.5s ease-out 0.8s;
@@ -68,45 +69,30 @@
 				position: relative;
 				z-index: 2;
 			}
-
-			/* NEW, RELIABLE ANIMATION: Fade and Scale for the logos */
 			.logo-wrapper {
-				/* Initial state: Invisible and slightly scaled down */
 				opacity: 0;
 				transform: scale(0.95);
-				/* Animation instructions */
 				transition: all 1.5s ease-in-out 2.5s;
 			}
-            
-			/* This triggers the final state for the logo wrappers */
-			.run-animation .logo-wrapper {
+			.run-animation .logo-wrapper,
+			.run-animation .logo-separator {
 				opacity: 1;
 				transform: scale(1);
 			}
-
-			/* FIX for the squashed logo */
 			.logo-image {
 				filter: brightness(0) invert(1);
-				/* We define the height and let width be automatic to preserve shape */
+				/* FIX for the squashed logo */
 				height: 150px;
-				width: auto;
+				width: auto; /* This preserves the natural shape */
 			}
-			
 			.logo-separator {
 				color: var(--tci-white);
 				font-size: 80px;
 				font-weight: 700;
-				margin: 0 120px;
-				/* The 'x' keeps its original, working spin animation */
-				opacity: 0; 
-				animation: spin-and-settle 2s ease-in-out 2.5s forwards;
-			}
-            
-			@keyframes spin-and-settle {
-				0% { opacity: 0; transform: rotate(-180deg); }
-				70% { opacity: 1; transform: rotate(380deg); }
-				85% { transform: rotate(355deg); }
-				100% { opacity: 1; transform: rotate(360deg); }
+				margin: 0 60px;
+				opacity: 0;
+				transform: scale(0.95);
+				transition: all 1.5s ease-in-out 2.5s;
 			}
 		</style>
 	</head>
