@@ -91,28 +91,32 @@
                 z-index: 2;
             }
 
-            .logo-image {
-                filter: brightness(0) invert(1);
-                height: 150px;
-                margin: 0;
+            /* NEW: This is the wrapper we will animate */
+            .logo-wrapper {
                 opacity: 0;
                 transition: transform 1.5s ease-out 2.5s, opacity 1.5s ease-in 2.5s;
             }
+
+            .logo-image {
+                filter: brightness(0) invert(1);
+                height: 150px;
+                /* MODIFIED: Removed margin and animation properties from the image itself */
+            }
             
-            /* Set starting positions */
-            .logo-container img:first-of-type {
+            /* Set starting positions for the WRAPPERS */
+            .logo-container .logo-wrapper:first-of-type {
                 transform: translateX(-150px);
             }
-            .logo-container img:last-of-type {
+            .logo-container .logo-wrapper:last-of-type {
                 transform: translateX(150px);
             }
 
-            /* MODIFIED: Replaced the old rule with these more specific ones to fix the bug */
-            .run-animation .logo-container img:first-of-type,
-            .run-animation .logo-container img:last-of-type {
+            /* Trigger the final state for the WRAPPERS */
+            .run-animation .logo-wrapper {
                 opacity: 1;
                 transform: translateX(0);
             }
+
 
             /* --- 'x' Separator and its Animation --- */
             .logo-separator {
@@ -154,9 +158,15 @@
 					<h1>Project Proposition</h1>
 					
                     <div class="logo-container">
-                        <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
+                        <div class="logo-wrapper">
+                            <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
+                        </div>
+                        
                         <span class="logo-separator">x</span>
-                        <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
+
+                        <div class="logo-wrapper">
+                            <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
+                        </div>
                     </div>
 				</section>
 
@@ -164,6 +174,7 @@
 					<h2>Agenda</h2>
 					<p>Next, we'll build out the agenda or introduction slide here.</p>
 				</section>
+
 			</div>
 		</div>
 
