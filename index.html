@@ -3,13 +3,18 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
 		<title>TCI Culinary Proposition for Black + Blum</title>
+
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reset.min.css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+		
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+		
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/black.css" id="theme">
+
 		<style>
 			:root {
 				--tci-white: #FFFFFF;
@@ -17,31 +22,46 @@
 				--tci-orange: #FFA02A;
 				--tci-charcoal: #1E1C1D;
 			}
-			.reveal { font-family: 'Montserrat', sans-serif; }
-			.reveal, .reveal .slides { background-color: var(--tci-charcoal); color: var(--tci-white); }
-			.reveal h1, .reveal h2, .reveal h3, .reveal h4 { color: var(--tci-orange); text-transform: none; }
-			.text-orange { color: var(--tci-orange); }
-            .slide-content-wrapper {
-				display: grid;
-				grid-template-columns: 1fr;
-				grid-template-rows: 1fr;
-				height: 90vh;
-                width: 100%;
+
+			.reveal {
+				font-family: 'Montserrat', sans-serif;
 			}
-            .text-content {
-                grid-area: 1 / 1 / 2 / 2;
-                justify-self: center;
-                align-self: center;
-                z-index: 1;
-            }
+
+			.reveal, .reveal .slides {
+				background-color: var(--tci-charcoal);
+				color: var(--tci-white);
+			}
+
+			/* THIS IS THE KEY: Makes the slide the positioning 'anchor' */
+			.reveal .slides section {
+				position: relative;
+			}
+
+			.reveal h1,
+			.reveal h2,
+			.reveal h3,
+			.reveal h4 {
+				color: var(--tci-orange);
+				text-transform: none;
+			}
+			
+			.text-orange {
+				color: var(--tci-orange);
+			}
+
+			/* --- SIMPLIFIED Grid Animation Styles --- */
 			.grid-overlay {
-				grid-area: 1 / 1 / 2 / 2;
-				justify-self: end;
-				align-self: start;
-                z-index: 0;
+				/* This tells the grid to float relative to its anchor */
+				position: absolute;
+				/* This locks it to the top right corner of the anchor */
+				top: 0;
+				right: 0;
+
 				width: 45vw;
 				height: 25vh;
+				z-index: 0; /* Ensures it is behind the text */
 			}
+			
 			.grid-overlay::before {
 				content: '';
 				position: absolute;
@@ -49,38 +69,45 @@
 				right: 0;
 				width: 100%;
 				height: 100%;
+				
 				background-image: 
 					linear-gradient(to right, rgba(255, 255, 255, 0.15) 1px, transparent 1px),
 					linear-gradient(to bottom, rgba(255, 255, 255, 0.15) 1px, transparent 1px);
 				background-size: 20px 20px;
+
 				animation: wipe-in 1.2s ease-out forwards;
 			}
+
 			@keyframes wipe-in {
-				from { clip-path: polygon(100% 0, 100% 0, 100% 0, 100% 0); }
-				to { clip-path: polygon(100% 0, 0 0, 0 100%, 100% 100%); }
+				from {
+					clip-path: polygon(100% 0, 100% 0, 100% 0, 100% 0);
+				}
+				to {
+					clip-path: polygon(100% 0, 0 0, 0 100%, 100% 100%);
+				}
 			}
 		</style>
 	</head>
 	<body>
 		<div class="reveal">
 			<div class="slides">
+				
 				<section>
-                    <div class="slide-content-wrapper">
-                        <div class="grid-overlay"></div>
-                        <div class="text-content">
-						    <h1>Project Proposition</h1>
-						    <p>Presented to <span class="text-orange">Black + Blum</span></p>
-						    <br>
-						    <p><small>On behalf of TCI Culinary</small></p>
-                        </div>
-                    </div>
+					<div class="grid-overlay"></div>
+					
+					<h1>Project Proposition</h1>
+					<p>Presented to <span class="text-orange">Black + Blum</span></p>
+					<br>
+					<p><small>On behalf of TCI Culinary</small></p>
 				</section>
+
 				<section>
 					<h2>Agenda</h2>
 					<p>Next, we'll build out the agenda or introduction slide here.</p>
 				</section>
 			</div>
 		</div>
+
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
 		<script>
 			Reveal.initialize({ hash: true, plugins: [] });
