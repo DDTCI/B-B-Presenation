@@ -22,66 +22,71 @@
     .reveal .slides section {
       position: relative;
       height: 100%;
-      display: flex;
+      display: flex; /* Using flexbox for centering */
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      text-align: center;
     }
     .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
       color: var(--tci-white);
       position: relative;
       z-index: 10;
+      transition: opacity 0.5s ease-out; /* For fade-out */
     }
-    /* --- Grid Styles & Opening Animation --- */
-    .grid-background {
+    
+    /* --- GLOBAL GRID: Two separate layers for independent animation --- */
+    .grid-lines-h, .grid-lines-v {
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
       z-index: 0;
-      background-image: 
-        linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-        linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    }
+    .grid-lines-h {
+      background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
       background-size: 80px 80px;
-      /* Initial state for opening animation */
-      opacity: 0;
-      transition: opacity 2s ease-in-out 0.5s;
+      transform: translateX(-100%);
+      transition: transform 1.5s ease-out 0.8s;
     }
-    .run-opening-animation .grid-background {
-      opacity: 1;
+    .grid-lines-v {
+      background-image: linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+      background-size: 80px 80px;
+      transform: translateY(-100%);
+      transition: transform 1.5s ease-out 0.5s;
+    }
+    .run-opening-animation .grid-lines-h,
+    .run-opening-animation .grid-lines-v {
+      transform: translate(0, 0);
     }
 
-    /* --- Logo Styles (Two States for auto-animate) --- */
-    
-    /* Default state for logo containers */
+    /* --- TITLE SLIDE LOGOS --- */
     .logo-container {
-        display: flex;
-        align-items: center;
-    }
-
-    /* Styles for the Title Slide state */
-    .logo-container-title {
+      display: flex;
       justify-content: center;
+      align-items: center;
       margin-top: 40px;
-      /* Initial state for opening animation */
+      position: relative;
+      z-index: 10;
+      /* Set initial state for opening animation */
       opacity: 0;
-      transition: opacity 1.5s ease-in 1.5s;
+      transition: opacity 1s ease-in 1.5s; /* Fade-out transition */
     }
-    .run-opening-animation .logo-container-title {
+    .run-opening-animation .logo-container {
       opacity: 1;
     }
-    .logo-container-title .logo-image {
+    .logo-image {
+      filter: brightness(0) invert(1);
       height: 150px;
       width: auto;
-      filter: brightness(0) invert(1);
     }
-    .logo-container-title .logo-separator {
+    .logo-separator {
       color: var(--tci-white);
       font-size: 80px;
       font-weight: 700;
       margin: 0 60px;
-      /* Initial state for opening animation */
       opacity: 0;
-      animation: spin-and-settle 2s ease-in-out 2s forwards;
+      animation: none; /* No animation by default */
+    }
+    .run-opening-animation .logo-separator {
+      animation: spin-and-settle 2s ease-in-out 1.8s forwards;
     }
     @keyframes spin-and-settle {
       0%   { opacity: 0; transform: rotate(-180deg); }
@@ -89,72 +94,88 @@
       85%  { transform: rotate(355deg); }
       100% { opacity: 1; transform: rotate(360deg); }
     }
-    .run-opening-animation .logo-container-title .logo-separator {
-        animation-play-state: running;
+
+    /* --- EXIT ANIMATIONS (triggered by JS) --- */
+    .run-exit-animation h1,
+    .run-exit-animation .logo-container {
+        opacity: 0 !important;
     }
 
-    /* Styles for the Corner state (Slide 2 onwards) */
-    .logo-container-corner {
+    /* --- CORNER LOGOS (on slide 2) --- */
+    .corner-logos {
       position: absolute;
-      top: 40px;
-      left: 40px;
-      z-index: 10;
+      top: 40px; left: 40px; z-index: 10;
+      display: flex;
       flex-direction: column;
       align-items: flex-start;
     }
-    .logo-container-corner .logo-image {
-      height: 40px;
-      width: auto;
-      filter: brightness(0) invert(1);
-    }
+    .corner-logos .logo-image { height: 40px; }
     
-    /* Navigation Arrow Fix */
-    .reveal .controls .controls-arrow {
-      border-color: var(--tci-white) !important;
-    }
+    /* --- Nav Arrow Fix --- */
+    .reveal .controls .controls-arrow { border-color: var(--tci-white) !important; }
   </style>
 </head>
 <body>
   <div class="reveal">
+    <div class="grid-lines-h"></div>
+    <div class="grid-lines-v"></div>
+
     <div class="slides">
-      
-      <section data-auto-animate>
-        <div class="grid-background"></div>
-        <h1 data-id="title">Project Proposition</h1>
-        <div data-id="logo-area" class="logo-container logo-container-title">
-          <img data-id="tci-logo" src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
-          <span data-id="x-separator" class="logo-separator">x</span>
-          <img data-id="bb-logo" src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
+      <section id="title-slide">
+        <h1>Project Proposition</h1>
+        <div class="logo-container">
+          <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
+          <span class="logo-separator">x</span>
+          <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
         </div>
       </section>
 
-      <section data-auto-animate>
-        <div class="grid-background"></div>
-        <div data-id="logo-area" class="logo-container logo-container-corner">
-            <img data-id="tci-logo" src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
-            <img data-id="bb-logo" src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
+      <section>
+        <div class="corner-logos">
+          <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
+          <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
         </div>
-
         <h2>Agenda</h2>
         <p>Next, we'll build out the agenda or introduction slide here.</p>
       </section>
-      
     </div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
   <script>
-    // MODIFIED: We re-enable autoAnimate
     Reveal.initialize({
-        hash: true,
-        transition: 'slide',
-        autoAnimate: true 
+      hash: true,
+      transition: 'slide'
     });
 
-    // This JS only runs once on page load to trigger the opening animation
+    // Trigger the initial "welcome" animation
     setTimeout(function() {
-        document.body.classList.add('run-opening-animation');
+      document.body.classList.add('run-opening-animation');
     }, 200);
+
+    // This custom JS handles the exit animation BEFORE navigating
+    function exitAndNavigate() {
+      // Add the exit class to trigger CSS fade-out transitions
+      document.body.classList.add('run-exit-animation');
+      
+      // Wait for the fade-out to finish (1s is plenty)
+      setTimeout(() => {
+        Reveal.next();
+        // Clean up the class immediately after navigating
+        document.body.classList.remove('run-exit-animation');
+      }, 1000);
+    }
+
+    // Hijack the 'next' arrow ONLY on the first slide
+    let nextArrow = document.querySelector('.navigate-right');
+    if (nextArrow) {
+      nextArrow.addEventListener('click', function(e) {
+        if (Reveal.isFirstSlide()) {
+          e.preventDefault();
+          exitAndNavigate();
+        }
+      }, false);
+    }
   </script>
 </body>
 </html>
