@@ -18,8 +18,6 @@
     .reveal {
       font-family: 'Montserrat', sans-serif;
       background-color: var(--tci-charcoal);
-      position: relative; 
-      overflow: hidden; 
     }
     .reveal .slides section {
       position: relative;
@@ -30,42 +28,23 @@
       align-items: center;
       text-align: center;
     }
-    .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+    .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal p {
       color: var(--tci-white);
       position: relative;
       z-index: 10;
     }
     
-    /* --- GLOBAL GRID --- */
-    .grid-lines-h, .grid-lines-v {
+    /* --- Grid Style (Now lives inside each slide) --- */
+    .grid-background {
       position: absolute; top: 0; left: 0; width: 100%; height: 100%;
       z-index: 0;
-    }
-    .grid-lines-h {
-      background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+      background-image: 
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
       background-size: 80px 80px;
-      transform: translateX(-100%);
-      transition: transform 1.5s ease-out 0.8s;
-    }
-    .grid-lines-v {
-      background-image: linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-      background-size: 80px 80px;
-      transform: translateY(-100%);
-      transition: transform 1.5s ease-out 0.5s;
-    }
-    .run-opening-animation .grid-lines-h,
-    .run-opening-animation .grid-lines-v {
-      transform: translate(0, 0);
     }
 
-    /* --- TITLE SLIDE CONTENT --- */
-    .title-content {
-        opacity: 0;
-        transition: opacity 1.5s ease-in 1.5s;
-    }
-    .run-opening-animation .title-content {
-        opacity: 1;
-    }
+    /* --- Logo Styles --- */
     .logo-container {
       display: flex;
       justify-content: center;
@@ -75,82 +54,88 @@
     .logo-image {
       filter: brightness(0) invert(1);
       height: 150px;
-      width: auto;
+      width: auto; /* Preserves aspect ratio */
     }
     .logo-separator {
       color: var(--tci-white);
       font-size: 80px;
       font-weight: 700;
       margin: 0 60px;
-      opacity: 0; 
-    }
-    .run-opening-animation .logo-separator {
-      animation: spin-and-settle 2s ease-in-out 1.8s forwards;
-    }
-    @keyframes spin-and-settle {
-      0%   { opacity: 0; transform: rotate(-180deg); }
-      70%  { opacity: 1; transform: rotate(380deg); }
-      85%  { transform: rotate(355deg); }
-      100% { opacity: 1; transform: rotate(360deg); }
     }
 
-    /* --- CORNER LOGOS (on slide 2) --- */
+    /* --- Corner Logos (on slide 2) --- */
     .corner-logos {
       position: absolute;
       top: 40px; left: 40px; z-index: 10;
       display: flex;
-      flex-direction: row; /* MODIFIED: Placed side-by-side */
+      flex-direction: row;
       align-items: center;
-      gap: 20px; /* MODIFIED: Added space between them */
+      gap: 20px;
     }
-    /* MODIFIED: Removed the custom animation rules that were failing */
-    .corner-logos .logo-image { 
-      height: 40px; 
+    .corner-logos .logo-image {
+      height: 40px;
     }
     
+    /* --- Animated Line for Slide 2 --- */
+    .animated-line {
+        width: 0;
+        height: 1px;
+        background-color: var(--tci-white);
+        margin: 30px auto;
+        transition: width 0.8s ease-out;
+    }
+    .animated-line.visible { /* .visible is added by reveal.js */
+        width: 60%;
+    }
+
     /* --- Nav Arrow Fix --- */
     .reveal .controls .controls-arrow { border-color: var(--tci-white) !important; }
   </style>
 </head>
 <body>
   <div class="reveal">
-    <div class="grid-lines-h"></div>
-    <div class="grid-lines-v"></div>
-
     <div class="slides">
+      
       <section>
-        <div class="title-content">
+        <div class="grid-background fragment fade-in" data-fragment-index="0"></div>
+        <div class="fragment fade-in" data-fragment-index="1">
           <h1>Project Proposition</h1>
-          <div class="logo-container">
-            <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
-            <span class="logo-separator">x</span>
-            <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
-          </div>
+        </div>
+        <div class="logo-container fragment fade-in" data-fragment-index="2">
+          <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
+          <span class="logo-separator">x</span>
+          <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
         </div>
       </section>
 
       <section>
-        <div class="corner-logos fragment fade-in" data-fragment-index="1">
+        <div class="grid-background"></div>
+        
+        <div class="corner-logos fragment fade-in" data-fragment-index="0">
           <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
           <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
         </div>
-        <h2 class="fragment fade-in" data-fragment-index="2">Agenda</h2>
-        <p class="fragment fade-in" data-fragment-index="3">Next, we'll build out the agenda or introduction slide here.</p>
+
+        <div style="width: 60%;">
+            <h2 class="fragment fade-in" data-fragment-index="1">delivering the next big Black + Blum innovation</h2>
+            <div class="animated-line fragment" data-fragment-index="2"></div>
+            <h3 class="fragment fade-in" data-fragment-index="3">the project</h3>
+            <p class="fragment fade-in" data-fragment-index="4" style="font-weight: 300;">
+                the desired outcome of this project is the delivery of silicone tin foil that can be reused
+            </p>
+        </div>
       </section>
     </div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
   <script>
+    // The JavaScript is now just the default initialization.
+    // All animations are handled by the 'fragment' classes in the HTML.
     Reveal.initialize({
       hash: true,
       transition: 'slide'
     });
-
-    // This triggers the opening animation
-    setTimeout(function() {
-      document.body.classList.add('run-opening-animation');
-    }, 200);
   </script>
 </body>
 </html>
