@@ -89,27 +89,44 @@
                 margin-top: 40px;
                 position: relative;
                 z-index: 2;
-                opacity: 0;
-                transition: opacity 1.5s ease-in 2.5s;
+                /* MODIFIED: Animation is now on individual logos, not the container */
             }
 
-            .run-animation .logo-container {
+            /* MODIFIED: This class defines the final state for the logos */
+            .run-animation .logo-image {
                 opacity: 1;
+                transform: translateX(0);
             }
 
             .logo-image {
                 filter: brightness(0) invert(1);
-                height: 150px; /* MODIFIED: Logos are now twice as large */
-                margin: 0 60px; /* MODIFIED: Increased space between elements */
+                height: 150px;
+                margin: 0; /* MODIFIED: Margin is now on the separator */
+
+                /* NEW: Set up initial state and transition for each logo */
+                opacity: 0;
+                transition: transform 1.5s ease-out 2.5s, opacity 1.5s ease-in 2.5s;
             }
+            
+            /* NEW: Target the first logo to start from the left */
+            .logo-container img:first-of-type {
+                transform: translateX(-150px);
+            }
+
+            /* NEW: Target the second logo to start from the right */
+            .logo-container img:last-of-type {
+                transform: translateX(150px);
+            }
+
 
             /* --- 'x' Separator and its Animation --- */
             .logo-separator {
                 color: var(--tci-white);
-                font-size: 80px; /* MODIFIED: Increased size to match logos */
-                font-weight: 700; /* MODIFIED: Increased thickness to bold */
+                font-size: 80px;
+                font-weight: 700;
                 opacity: 0; 
                 animation: spin-and-settle 2s ease-in-out 2.5s forwards;
+                margin: 0 120px; /* MODIFIED: Increased margin to double the gap */
             }
 
             @keyframes spin-and-settle {
