@@ -15,76 +15,136 @@
       --tci-white: #FFFFFF;
       --tci-charcoal: #1E1C1D;
     }
+    
     .reveal {
       font-family: 'Montserrat', sans-serif;
       background-color: var(--tci-charcoal);
       position: relative; 
       overflow: hidden; 
     }
-    .reveal .slides section {
-      position: relative;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
+
+    /* --- DYNAMIC GRID LINES --- */
+    .grid-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+      pointer-events: none;
+      background: none; /* Ensure no background */
     }
-    .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal p {
-      color: var(--tci-white);
-      position: relative;
+    
+    .grid-line {
+      position: absolute;
+      background-color: white;
+      opacity: 0;
+      /* MODIFIED: Added 'transform' to the transition for the slide-in effect. */
+      transition: opacity 0.8s ease-in-out, transform 1.5s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+    
+    .grid-line.horizontal {
+      width: 100vw;
+      height: 2px;
+    }
+    
+    .grid-line.vertical {
+      width: 2px;
+      height: 100vh;
+    }
+    
+    .grid-line.animate-in {
+      opacity: 0.15; /* A more subtle final opacity */
+      /* MODIFIED: The final state of the transform, which triggers the animation. */
+      transform: translate(0, 0);
+    }
+
+    /* --- SLIDE STYLING --- */
+    .reveal .slides section {
+      position: relative !important;
+      height: 100vh !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: center !important;
+      align-items: center !important;
+      text-align: center !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      top: 0 !important;
+      left: 0 !important;
+      transform: none !important;
       z-index: 10;
     }
     
-    /* --- GLOBAL GRID --- */
-    .grid-lines-h, .grid-lines-v {
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-      z-index: 0;
+    .reveal .slides section.present,
+    .reveal .slides section.past,
+    .reveal .slides section.future {
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100% !important;
+      height: 100vh !important;
+      transform: none !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: center !important;
+      align-items: center !important;
+      z-index: 10;
     }
-    .grid-lines-h {
-      background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-      background-size: 80px 80px;
-      transform: translateX(-100%);
-      transition: transform 1.5s ease-out 0.8s;
+    
+    .reveal .slides section.agenda-slide {
+      padding-top: 140px;
+      justify-content: flex-start;
     }
-    .grid-lines-v {
-      background-image: linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-      background-size: 80px 80px;
-      transform: translateY(-100%);
-      transition: transform 1.5s ease-out 0.5s;
-    }
-    .run-opening-animation .grid-lines-h,
-    .run-opening-animation .grid-lines-v {
-      transform: translate(0, 0);
+    
+    .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal p {
+      color: var(--tci-white);
+      position: relative;
+      z-index: 15;
     }
 
     /* --- TITLE SLIDE CONTENT --- */
     .title-content {
         opacity: 0;
         transition: opacity 1.5s ease-in 1.5s;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin-top: -120px;
+        z-index: 15;
     }
+    
     .run-opening-animation .title-content {
         opacity: 1;
     }
+    
     .logo-container {
       display: flex;
       justify-content: center;
       align-items: center;
       margin-top: 40px;
     }
+    
     .logo-image {
       filter: brightness(0) invert(1);
       height: 150px;
       width: auto;
     }
+    
     .logo-separator {
       color: var(--tci-white);
       font-size: 80px;
       font-weight: 700;
       margin: 0 60px;
       opacity: 0; 
+    }
+    
+    .run-opening-animation .logo-separator {
       animation: spin-and-settle 2s ease-in-out 1.5s forwards;
     }
+    
     @keyframes spin-and-settle {
       0%   { opacity: 0; transform: rotate(-180deg); }
       70%  { opacity: 1; transform: rotate(380deg); }
@@ -92,46 +152,90 @@
       100% { opacity: 1; transform: rotate(360deg); }
     }
 
-    /* --- CORNER LOGOS (on slide 2) --- */
+    /* --- CORNER LOGOS (on slides 2+) --- */
     .corner-logos {
       position: absolute;
-      top: 40px; left: 40px; z-index: 10;
+      top: 40px; 
+      left: 40px; 
+      z-index: 20;
       display: flex;
-      flex-direction: row;
-      align-items: center;
-      gap: 20px;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
     }
+    
     .corner-logos .logo-image { 
       height: 40px; 
     }
-    
-    /* --- NEW: Styles for Slide 2 --- */
-    .align-top {
-        justify-content: flex-start; /* Aligns content to the top */
-        padding-top: 5%;
-    }
-    .inline-heading {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 0.5em; /* Adds space around the inline logo */
-    }
-    .logo-in-heading {
-        height: 1em; /* Sizes the logo relative to the heading font size */
-        filter: brightness(0) invert(1);
+
+    /* --- SUSTAINABILITY STATEMENT SLIDE --- */
+    .sustainability-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+      width: 100%;
+      max-width: 900px;
+      z-index: 15;
+      position: relative;
+      text-align: center;
     }
     
-    /* --- Nav Arrow Fix --- */
-    .reveal .controls .controls-arrow { border-color: var(--tci-white) !important; }
+    .sustainability-content h2 {
+      color: var(--tci-white) !important;
+      font-size: 3rem !important;
+      text-align: center;
+      margin: 0 0 2rem 0 !important;
+      line-height: 1.2;
+      font-family: 'Montserrat', sans-serif !important;
+    }
+    
+    .inline-logo-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+    }
+    
+    .inline-brand-logo {
+      filter: brightness(0) invert(1) !important;
+      height: 120px !important;
+      width: auto;
+      transition: transform 0.3s ease;
+    }
+    
+    .inline-brand-logo:hover {
+      transform: scale(1.05);
+    }
+    
+    /* --- Navigation Controls --- */
+    .reveal .controls .controls-arrow { 
+      border-color: var(--tci-white) !important; 
+      z-index: 25;
+    }
+
+    /* --- Brand Logo Placeholder --- */
+    .brand-logo-placeholder {
+      width: 300px; 
+      height: 120px; 
+      border: 2px solid white; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      color: white; 
+      font-size: 1.2rem; 
+      text-align: center;
+      z-index: 15;
+      position: relative;
+    }
   </style>
 </head>
 <body>
   <div class="reveal">
+    <div class="grid-container" id="gridContainer"></div>
+
     <div class="slides">
-      
       <section>
-        <div class="grid-lines-h"></div>
-        <div class="grid-lines-v"></div>
         <div class="title-content">
           <h1>Project Proposition</h1>
           <div class="logo-container">
@@ -142,36 +246,138 @@
         </div>
       </section>
 
-      <section class="align-top">
-        <div class="grid-lines-h"></div>
-        <div class="grid-lines-v"></div>
-
-        <div class="corner-logos fragment fade-in">
+      <section>
+        <div class="corner-logos">
           <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
           <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
         </div>
-
-        <h2 class="fragment fade-in inline-heading">
-          The next great&nbsp;
-          <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-in-heading">
-          &nbsp;innovation
-        </h2>
         
+        <h1 style="color: white !important; font-size: 3rem !important; margin-bottom: 2rem !important; text-align: center !important; z-index: 15; position: relative;">The next great sustainability innovation from</h1>
+        
+        <div class="brand-logo-placeholder">
+          BLACK + BLUM LOGO
+        </div>
+      </section>
+
+      <section class="agenda-slide">
+        <div class="corner-logos">
+          <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
+          <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
+        </div>
+        <h2 class="fragment fade-in">Agenda</h2>
+        <p class="fragment fade-in">Next, we'll build out the agenda or introduction slide here.</p>
       </section>
     </div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
   <script>
+    // Initialize Reveal.js
     Reveal.initialize({
-      hash: true,
-      transition: 'slide'
+      hash: false,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      fragments: true,
+      controls: true,
+      progress: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      shuffle: false,
+      keyboard: true,
+      overview: true,
+      disableLayout: false,
+      mouseWheel: false,
+      hideInactiveCursor: true,
+      hideCursorTime: 5000,
+      previewLinks: false,
+      focusBodyOnPageVisibilityChange: true
     });
 
-    // This triggers the opening animation for the first slide
+    // Dynamic Grid Animation System
+    function createDynamicGrid() {
+      const gridContainer = document.getElementById('gridContainer');
+      const gridSize = 60; // Size of each grid square
+      const windowWidth = window.innerWidth;
+      const windowHeight = window.innerHeight;
+      
+      // Calculate number of lines needed
+      const horizontalLines = Math.ceil(windowHeight / gridSize);
+      const verticalLines = Math.ceil(windowWidth / gridSize);
+      
+      const allLines = [];
+      
+      // Create horizontal lines
+      for (let i = 0; i <= horizontalLines; i++) {
+        const line = document.createElement('div');
+        line.className = 'grid-line horizontal';
+        line.style.top = (i * gridSize) + 'px';
+        line.style.left = '0px';
+
+        // NEW: Set initial off-screen position for a random slide-in direction
+        const startPos = Math.random() < 0.5 ? '-100%' : '100%';
+        line.style.transform = `translateX(${startPos})`;
+        
+        gridContainer.appendChild(line);
+        allLines.push(line);
+      }
+      
+      // Create vertical lines
+      for (let i = 0; i <= verticalLines; i++) {
+        const line = document.createElement('div');
+        line.className = 'grid-line vertical';
+        line.style.left = (i * gridSize) + 'px';
+        line.style.top = '0px';
+
+        // NEW: Set initial off-screen position for a random slide-in direction
+        const startPos = Math.random() < 0.5 ? '-100%' : '100%';
+        line.style.transform = `translateY(${startPos})`;
+
+        gridContainer.appendChild(line);
+        allLines.push(line);
+      }
+      
+      return allLines;
+    }
+    
+    function animateGridLines(lines) {
+      // Shuffle the lines array for random order
+      const shuffledLines = [...lines].sort(() => Math.random() - 0.5);
+      
+      shuffledLines.forEach((line, index) => {
+        // Random delay between 0.1-1.5 seconds to stagger the animation
+        const randomDelay = 100 + (Math.random() * 1400);
+        
+        setTimeout(() => {
+          line.classList.add('animate-in');
+        }, randomDelay);
+      });
+    }
+
+    // Initialize grid and trigger animations
     setTimeout(function() {
       document.body.classList.add('run-opening-animation');
-    }, 200);
+      
+      // Create and animate grid lines
+      const gridLines = createDynamicGrid();
+      animateGridLines(gridLines);
+    }, 500);
+
+    // Recreate grid on window resize
+    window.addEventListener('resize', function() {
+      const gridContainer = document.getElementById('gridContainer');
+      gridContainer.innerHTML = '';
+      const gridLines = createDynamicGrid();
+      // Immediately show all lines on resize (no animation needed)
+      gridLines.forEach(line => line.classList.add('animate-in'));
+    });
+
+    // Debug slide changes
+    Reveal.on('slidechanged', function(event) {
+      console.log('Slide changed to:', event.indexh);
+    });
   </script>
 </body>
 </html>
