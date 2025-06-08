@@ -24,23 +24,17 @@
 			}
 			.reveal .slides {
 				background: transparent;
-				color: var(--tci-white);
 				text-align: center;
 			}
 			.reveal h1, .reveal h2, .reveal h3, .reveal h4 {
 				color: var(--tci-orange);
-				text-transform: none;
 				position: relative;
-				z-index: 2;
+				z-index: 10;
 			}
 			.grid-lines-horizontal,
 			.grid-lines-vertical {
-				content: '';
 				position: absolute;
-				top: 0;
-				left: 0;
-				width: 100%;
-				height: 100%;
+				top: 0; left: 0; width: 100%; height: 100%;
 				z-index: 0;
 			}
 			.grid-lines-horizontal {
@@ -50,74 +44,66 @@
 				transition: transform 2.5s ease-out;
 			}
 			.grid-lines-vertical {
+				/* FIXED THE TYPO HERE: Was '1', now '0.1' */
 				background-image: linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
 				background-size: 80px 80px;
 				transform: translateX(-100%);
 				transition: transform 2.5s ease-out 0.8s;
 			}
-			.run-animation .grid-lines-horizontal,
-			.run-animation .grid-lines-vertical {
+			.run-grid-animation .grid-lines-horizontal,
+			.run-grid-animation .grid-lines-vertical {
 				transform: translate(0, 0);
 			}
 
-			/* --- NEW: Global Logo Animation --- */
-
-			/* This container now lives globally and has two states */
+			/* --- Global Logo Container --- */
 			.logo-container {
-				/* This is the FINAL state (top-left corner) */
+				/* This is the INITIAL state: centered, large, and invisible */
 				position: absolute;
-				top: 40px;
-				left: 40px;
-				z-index: 10;
-				display: flex;
-				/* Stacks them vertically in the corner */
-				flex-direction: column; 
-				align-items: flex-start;
-				/* Animate any changes over 1 second */
-				transition: all 1s ease-in-out;
-			}
-			.logo-container .logo-image {
-				/* Final logo size */
-				height: 40px; 
-				width: auto;
-				filter: brightness(0) invert(1);
-				transition: all 1s ease-in-out;
-			}
-			.logo-container .logo-separator {
-				/* The 'x' is hidden in the final state */
-				display: none; 
-			}
-
-			/* This is the INITIAL state, ONLY for the title slide */
-			.state-title-slide .logo-container {
-				/* Start in the center of the page */
 				top: 50%;
 				left: 50%;
 				width: 100%;
 				transform: translate(-50%, -50%);
-				flex-direction: row; /* Arrange side-by-side */
+				z-index: 10;
+				display: flex;
 				justify-content: center;
 				align-items: center;
+				/* This will animate all changes when a class is added/removed */
+				transition: all 1s ease-in-out;
 			}
-			.state-title-slide .logo-container .logo-image {
-				/* Initial logo size */
+			.logo-container .logo-image {
 				height: 150px;
-				margin: 0 60px;
+				width: auto; /* This fixes the squashed logo */
+				filter: brightness(0) invert(1);
 			}
-			.state-title-slide .logo-container .logo-separator {
-				/* The 'x' is visible and styled on the title slide */
-				display: block;
+			.logo-container .logo-separator {
 				color: var(--tci-white);
 				font-size: 80px;
 				font-weight: 700;
+				margin: 0 60px;
 			}
 			
-			/* NEW: White Navigation Arrows Fix */
-			.reveal .controls button {
-				color: var(--tci-white);
+			/* --- Animation States --- */
+			
+			/* 1. The Opening Animation State */
+			.run-opening-animation .logo-container {
+				opacity: 1; /* Fades the container in */
 			}
-			.reveal .controls .controls-arrow {
-				border-color: var(--tci-white) !important;
+
+			/* 2. The Final Corner State (triggered by JS) */
+			.logos-in-corner .logo-container {
+				top: 40px;
+				left: 40px;
+				width: auto;
+				transform: translate(0, 0); /* Move to corner */
+				flex-direction: column; /* Stack logos */
+				align-items: flex-start;
+			}
+			.logos-in-corner .logo-image {
+				height: 40px; /* Shrink logos */
+				transition: height 1s ease-in-out;
+			}
+			.logos-in-corner .logo-separator {
+				display: none; /* Hide the 'x' */
 			}
 
 		</style>
@@ -126,19 +112,12 @@
 		<div class="reveal">
 			<div class="grid-lines-horizontal"></div>
 			<div class="grid-lines-vertical"></div>
-			
-			<div class="logo-container">
-				<img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
-				<span class="logo-separator">x</span>
-				<img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
-			</div>
+			<div class="logo-container" style="opacity: 0;"></div>
 			
 			<div class="slides">
-				
-				<section data-state="title-slide">
+				<section>
 					<h1>Project Proposition</h1>
-					</section>
-
+				</section>
 				<section>
 					<h2>Agenda</h2>
 					<p>Next, we'll build out the agenda or introduction slide here.</p>
@@ -148,12 +127,40 @@
 
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
 		<script>
-			// MODIFIED: Added transition: 'slide'
 			Reveal.initialize({
 				hash: true,
-				transition: 'slide', // 'slide', 'fade', 'convex', 'zoom'
+				transition: 'slide',
 				plugins: []
 			});
+
+			// Clone the logos from the HTML to be managed by JS
+			const logoContainer = document.querySelector('.logo-container');
+			const logoContent = `
+				<img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
+				<span class="logo-separator">x</span>
+				<img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">`;
+			logoContainer.innerHTML = logoContent;
+
+
+			// Trigger the initial "welcome" animation
+			setTimeout(function() {
+				document.body.classList.add('run-grid-animation');
+				document.body.classList.add('run-opening-animation');
+			}, 500);
+
+
+			// Listen for slide change events to move the logos
+			Reveal.on('slidechanged', event => {
+				// event.indexh is the horizontal index of the current slide
+				if (event.indexh > 0) {
+					// If we are on any slide AFTER the first one, add the corner class
+					document.body.classList.add('logos-in-corner');
+				} else {
+					// If we navigate back to the first slide, remove the class
+					document.body.classList.remove('logos-in-corner');
+				}
+			});
+
 		</script>
 	</body>
 </html>
