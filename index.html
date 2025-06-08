@@ -1,81 +1,89 @@
-// backend/pipedrive.jsw
-
-import { getSecret } from 'wix-secrets-backend';
-import { fetch }    from 'wix-fetch';
-
-/* Map dropdown emails → Pipedrive internal user IDs */
-const USER_ID_MAP = {
-  'thomas.lane@tci-mouldings.com':    21694454,
-  'kelly.ballinger@tci-mouldings.com': 23375562,
-  'george.preston@tci-mouldings.com':  23310475
-};
-
-/**
- * Called by http-functions.js to create a notification on Pipedrive.
- *
- * @param {{
- *   deal_id:    number|string,
- *   recipient:  string,   // one of the keys in USER_ID_MAP (email)
- *   sender:     string,   // name (from clientDropdown)
- *   message:    string
- * }} data
- */
-export async function handleContact(data) {
-  const token = await getSecret('PIPEDRIVE_API_TOKEN');
-  if (!token) {
-    throw new Error('Missing PIPEDRIVE_API_TOKEN secret');
-  }
-
-  const dealId  = Number(data.deal_id);
-  const userId  = USER_ID_MAP[data.recipient];
-  const mention = userId ? `@[user:${userId}] ` : '';
-  const subject = `${mention}New note from ${data.sender}`;
-  const noteBody =
-    `**From:** ${data.sender}\n\n` +
-    data.message;
-
-  console.log('🚀 handleContact payload:', { deal_id: dealId, subject, note: noteBody, type: 'note' });
-
-  // 1) Try creating an activity (so @-mention triggers a notification)
-  let res = await fetch(
-    `https://api.pipedrive.com/v1/activities?api_token=${encodeURIComponent(token)}`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        deal_id: dealId,
-        subject,
-        note: noteBody,
-        type: 'note'
-      })
-    }
-  );
-  let json = await res.json();
-  console.log('🌐 Pipedrive /activities response →', res.status, json);
-
-  if (json.success) {
-    return { success: true };
-  }
-
-  // 2) Fallback to plain note if activities failed
-  console.warn('Activity failed, falling back to notes endpoint:', json.error_info || json.error);
-  res = await fetch(
-    `https://api.pipedrive.com/v1/notes?api_token=${encodeURIComponent(token)}`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        deal_id: dealId,
-        content: `${mention}${noteBody}`
-      })
-    }
-  );
-  json = await res.json();
-  console.log('🌐 Pipedrive /notes response →', res.status, json);
-
-  if (!json.success) {
-    throw new Error('Both activity & note failed: ' + JSON.stringify(json));
-  }
-
-  return { success: true };
-}
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title>TCI Culinary Proposition for Black + Blum</title>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reset.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/black.css" id="theme">
+		<style>
+			:root {
+				--tci-white: #FFFFFF;
+				--tci-black: #000000;
+				--tci-orange: #FFA02A;
+				--tci-charcoal: #1E1C1D;
+			}
+			.reveal { font-family: 'Montserrat', sans-serif; }
+			.reveal, .reveal .slides { background-color: var(--tci-charcoal); color: var(--tci-white); }
+			.reveal h1, .reveal h2, .reveal h3, .reveal h4 { color: var(--tci-orange); text-transform: none; }
+			.text-orange { color: var(--tci-orange); }
+            .slide-content-wrapper {
+				display: grid;
+				grid-template-columns: 1fr;
+				grid-template-rows: 1fr;
+				height: 90vh;
+                width: 100%;
+			}
+            .text-content {
+                grid-area: 1 / 1 / 2 / 2;
+                justify-self: center;
+                align-self: center;
+                z-index: 1;
+            }
+			.grid-overlay {
+				grid-area: 1 / 1 / 2 / 2;
+				justify-self: end;
+				align-self: start;
+                z-index: 0;
+				width: 45vw;
+				height: 25vh;
+			}
+			.grid-overlay::before {
+				content: '';
+				position: absolute;
+				top: 0;
+				right: 0;
+				width: 100%;
+				height: 100%;
+				background-image: 
+					linear-gradient(to right, rgba(255, 255, 255, 0.15) 1px, transparent 1px),
+					linear-gradient(to bottom, rgba(255, 255, 255, 0.15) 1px, transparent 1px);
+				background-size: 20px 20px;
+				animation: wipe-in 1.2s ease-out forwards;
+			}
+			@keyframes wipe-in {
+				from { clip-path: polygon(100% 0, 100% 0, 100% 0, 100% 0); }
+				to { clip-path: polygon(100% 0, 0 0, 0 100%, 100% 100%); }
+			}
+		</style>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+                    <div class="slide-content-wrapper">
+                        <div class="grid-overlay"></div>
+                        <div class="text-content">
+						    <h1>Project Proposition</h1>
+						    <p>Presented to <span class="text-orange">Black + Blum</span></p>
+						    <br>
+						    <p><small>On behalf of TCI Culinary</small></p>
+                        </div>
+                    </div>
+				</section>
+				<section>
+					<h2>Agenda</h2>
+					<p>Next, we'll build out the agenda or introduction slide here.</p>
+				</section>
+			</div>
+		</div>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
+		<script>
+			Reveal.initialize({ hash: true, plugins: [] });
+		</script>
+	</body>
+</html>
