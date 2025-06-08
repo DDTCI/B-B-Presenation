@@ -81,21 +81,29 @@
                 transform: translateX(0);
             }
 
-            /* --- NEW: Logo Styles --- */
+            /* --- Logo Styles --- */
             .logo-container {
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                margin-top: 80px; /* Space below main text */
-                position: relative; /* Needed for z-index to work */
+                margin-top: 40px; /* MODIFIED: Reduced space to bring it closer to title */
+                position: relative;
                 z-index: 2;
+
+                /* NEW: Set initial state for fade-in animation */
+                opacity: 0;
+                transition: opacity 1.5s ease-in 2.5s; /* Animate opacity, take 1.5s, use ease-in, start after 2.5s delay */
+            }
+
+            /* NEW: This class will trigger the logo fade-in */
+            .run-animation .logo-container {
+                opacity: 1;
             }
 
             .logo-image {
-                /* This filter combo turns the all-black logos to white */
                 filter: brightness(0) invert(1);
-                height: 50px; /* Standard height for both logos */
-                margin: 0 30px; /* Space between logos */
+                height: 50px;
+                margin: 0 30px;
             }
 
 		</style>
@@ -109,9 +117,7 @@
 				
 				<section>
 					<h1>Project Proposition</h1>
-					<p>Presented to <span class="text-orange">Black + Blum</span></p>
-					<p><small>On behalf of TCI Culinary</small></p>
-                    
+					
                     <div class="logo-container">
                         <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
                         <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
