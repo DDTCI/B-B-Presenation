@@ -10,7 +10,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/black.css" id="theme">
-
   <style>
     :root {
       --tci-white: #FFFFFF;
@@ -22,70 +21,76 @@
     }
     .reveal .slides section {
       position: relative;
+      height: 100%;
       text-align: center;
     }
-    .reveal h1, .reveal h2 {
+    .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
       color: var(--tci-white);
-      text-transform: none;
       position: relative;
-      z-index: 2;
+      z-index: 10;
     }
-    .center-content {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100%;
-    }
-
-    /* --- Grid Styles & Opening Animation --- */
-    .grid-background {
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      z-index: 0;
-      background-image: 
-        linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-        linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-      background-size: 80px 80px;
-      /* Initial state for opening animation */
-      opacity: 0;
-      transition: opacity 2s ease-in-out 0.5s;
-    }
-    .run-opening-animation .grid-background {
-      opacity: 1;
-    }
-
-    /* --- Logo Styles (Two States for auto-animate) --- */
     
-    /* Default state: large and centered for the title slide */
-    .logo-container-title {
+    /* --- Grid Styles & Opening Animation --- */
+    .grid-lines-horizontal,
+    .grid-lines-vertical {
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        z-index: 0;
+    }
+    .grid-lines-horizontal {
+        background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+        background-size: 80px 80px;
+        transform: translateX(-100%);
+        transition: transform 1.5s ease-out 0.8s;
+    }
+    .grid-lines-vertical {
+        background-image: linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+        background-size: 80px 80px;
+        transform: translateY(-100%);
+        transition: transform 1.5s ease-out 0.5s;
+    }
+    .run-opening-animation .grid-lines-horizontal,
+    .run-opening-animation .grid-lines-vertical {
+        transform: translate(0, 0);
+    }
+
+    /* --- Centered Title Block for Slide 1 --- */
+    .title-block {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 100%;
+        transform: translate(-50%, -50%);
+        /* Set initial state for opening animation */
+        opacity: 0;
+        transition: opacity 1.5s ease-in 1.5s;
+    }
+    .run-opening-animation .title-block {
+        opacity: 1;
+    }
+    
+    /* --- Logo Styles (Two States for auto-animate) --- */
+    .logo-container {
       display: flex;
       justify-content: center;
       align-items: center;
       margin-top: 40px;
-      /* Initial state for opening animation */
-      opacity: 0;
-      transition: opacity 1.5s ease-in 1.5s;
     }
-    .run-opening-animation .logo-container-title {
-      opacity: 1;
-    }
-    .logo-container-title .logo-image {
+    .logo-container .logo-image {
       height: 150px;
       width: auto;
       filter: brightness(0) invert(1);
     }
-    .logo-container-title .logo-separator {
+    .logo-container .logo-separator {
       color: var(--tci-white);
       font-size: 80px;
       font-weight: 700;
       margin: 0 60px;
+      /* RESTORED: Give the 'x' its own animation */
       opacity: 0;
-      /* Restored spin-and-settle animation */
-      animation: spin-and-settle 2s ease-in-out 1.5s forwards;
+      animation: spin-and-settle 2s ease-in-out 2s forwards;
     }
     
-    /* The spin animation for the 'x' on load */
     @keyframes spin-and-settle {
         0%   { opacity: 0; transform: rotate(-180deg); }
         70%  { opacity: 1; transform: rotate(380deg); }
@@ -105,11 +110,9 @@
     }
     .logo-container-corner .logo-image {
       height: 40px;
-      width: auto;
-      filter: brightness(0) invert(1);
     }
     
-    /* White nav arrows */
+    /* Navigation Arrow Fix */
     .reveal .controls .controls-arrow {
       border-color: var(--tci-white) !important;
     }
@@ -120,10 +123,12 @@
     <div class="slides">
       
       <section data-auto-animate>
-        <div class="grid-background"></div>
-        <div class="center-content">
+        <div class="grid-lines-horizontal"></div>
+        <div class="grid-lines-vertical"></div>
+        
+        <div class="title-block">
             <h1 data-id="title">Project Proposition</h1>
-            <div data-id="logo-area" class="logo-container-title">
+            <div data-id="logo-area" class="logo-container">
               <img data-id="tci-logo" src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
               <span data-id="x-separator" class="logo-separator">x</span>
               <img data-id="bb-logo" src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
@@ -132,7 +137,9 @@
       </section>
 
       <section data-auto-animate>
-        <div class="grid-background"></div>
+        <div class="grid-lines-horizontal" style="transform:translate(0,0);"></div>
+        <div class="grid-lines-vertical" style="transform:translate(0,0);"></div>
+
         <div data-id="logo-area" class="logo-container-corner">
             <img data-id="tci-logo" src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
             <img data-id="bb-logo" src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
@@ -150,10 +157,10 @@
     Reveal.initialize({
         hash: true,
         transition: 'slide',
-        autoAnimate: true // This powers the transition between slides
+        autoAnimate: true
     });
 
-    // This JS only runs once on page load to trigger the opening animation
+    // This triggers the full opening animation sequence
     setTimeout(function() {
         document.body.classList.add('run-opening-animation');
     }, 200);
