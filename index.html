@@ -20,9 +20,8 @@
       font-family: 'Montserrat', sans-serif;
       background-color: var(--tci-charcoal);
     }
-    .reveal .slides {
-      background: transparent;
-      color: var(--tci-white);
+    .reveal .slides section {
+      position: relative;
       text-align: center;
     }
     .reveal h1, .reveal h2 {
@@ -31,55 +30,86 @@
       position: relative;
       z-index: 2;
     }
-    
-    /* NEW: This class will perfectly center the content on our title slide */
     .center-content {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
     }
 
-    /* --- Logo Styles --- */
+    /* --- Grid Styles & Opening Animation --- */
+    .grid-background {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 0;
+      background-image: 
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+      background-size: 80px 80px;
+      /* Initial state for opening animation */
+      opacity: 0;
+      transition: opacity 2s ease-in-out 0.5s;
+    }
+    .run-opening-animation .grid-background {
+      opacity: 1;
+    }
 
-    /* This defines the style for the logos on the FIRST slide */
+    /* --- Logo Styles (Two States for auto-animate) --- */
+    
+    /* Default state: large and centered for the title slide */
     .logo-container-title {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-top: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 40px;
+      /* Initial state for opening animation */
+      opacity: 0;
+      transition: opacity 1.5s ease-in 1.5s;
+    }
+    .run-opening-animation .logo-container-title {
+      opacity: 1;
     }
     .logo-container-title .logo-image {
-        filter: brightness(0) invert(1);
-        height: 150px;
-        width: auto;
+      height: 150px;
+      width: auto;
+      filter: brightness(0) invert(1);
     }
     .logo-container-title .logo-separator {
-        color: var(--tci-white);
-        font-size: 80px;
-        font-weight: 700;
-        margin: 0 60px;
+      color: var(--tci-white);
+      font-size: 80px;
+      font-weight: 700;
+      margin: 0 60px;
+      opacity: 0;
+      /* Restored spin-and-settle animation */
+      animation: spin-and-settle 2s ease-in-out 1.5s forwards;
+    }
+    
+    /* The spin animation for the 'x' on load */
+    @keyframes spin-and-settle {
+        0%   { opacity: 0; transform: rotate(-180deg); }
+        70%  { opacity: 1; transform: rotate(380deg); }
+        85%  { transform: rotate(355deg); }
+        100% { opacity: 1; transform: rotate(360deg); }
     }
 
-    /* This defines the style for the logos on ALL OTHER slides */
+    /* Modifier class for the corner state (on slide 2) */
     .logo-container-corner {
-        position: absolute;
-        top: 40px;
-        left: 40px;
-        z-index: 10;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
+      position: absolute;
+      top: 40px;
+      left: 40px;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
     }
     .logo-container-corner .logo-image {
-        height: 40px; /* Smaller size */
-        width: auto;
-        filter: brightness(0) invert(1);
+      height: 40px;
+      width: auto;
+      filter: brightness(0) invert(1);
     }
-    /* The 'x' is not in the corner container, so it will fade out automatically */
     
-    /* white nav arrows */
+    /* White nav arrows */
     .reveal .controls .controls-arrow {
       border-color: var(--tci-white) !important;
     }
@@ -90,24 +120,22 @@
     <div class="slides">
       
       <section data-auto-animate>
+        <div class="grid-background"></div>
         <div class="center-content">
             <h1 data-id="title">Project Proposition</h1>
-            <div class="logo-container-title">
-              <img data-id="tci-logo" src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png"
-                   alt="TCI Products Logo" class="logo-image">
+            <div data-id="logo-area" class="logo-container-title">
+              <img data-id="tci-logo" src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
               <span data-id="x-separator" class="logo-separator">x</span>
-              <img data-id="bb-logo" src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg"
-                   alt="Black + Blum Logo" class="logo-image">
+              <img data-id="bb-logo" src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
             </div>
         </div>
       </section>
 
       <section data-auto-animate>
-        <div class="logo-container-corner">
-            <img data-id="tci-logo" src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png"
-                 alt="TCI Products Logo" class="logo-image">
-            <img data-id="bb-logo" src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg"
-                 alt="Black + Blum Logo" class="logo-image">
+        <div class="grid-background"></div>
+        <div data-id="logo-area" class="logo-container-corner">
+            <img data-id="tci-logo" src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
+            <img data-id="bb-logo" src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
         </div>
 
         <h2>Agenda</h2>
@@ -119,12 +147,16 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
   <script>
-    // MODIFIED: We enable autoAnimate and remove all the custom exit JS
     Reveal.initialize({
         hash: true,
         transition: 'slide',
-        autoAnimate: true // This does all the magic for us
+        autoAnimate: true // This powers the transition between slides
     });
+
+    // This JS only runs once on page load to trigger the opening animation
+    setTimeout(function() {
+        document.body.classList.add('run-opening-animation');
+    }, 200);
   </script>
 </body>
 </html>
