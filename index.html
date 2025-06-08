@@ -20,16 +20,17 @@
 				font-family: 'Montserrat', sans-serif;
 				background-color: var(--tci-charcoal);
 			}
+			/* MODIFIED: Ensure slides take up the full height */
 			.reveal .slides section {
 				position: relative;
 				text-align: center;
+				height: 100%; 
 			}
 			.reveal h1, .reveal h2, .reveal h3, .reveal h4 {
 				color: var(--tci-orange);
 				position: relative;
 				z-index: 10;
 			}
-			
 			/* --- Grid Styles & Animation --- */
 			.grid-background-h, .grid-background-v {
 				position: absolute;
@@ -39,14 +40,16 @@
 			.grid-background-h {
 				background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
 				background-size: 80px 80px;
-				transform: translateY(-100%);
-				transition: transform 1.5s ease-out 0.5s; /* Start after 0.5s */
+				/* MODIFIED: Horizontal lines now slide in from the left */
+				transform: translateX(-100%);
+				transition: transform 1.5s ease-out 1s;
 			}
 			.grid-background-v {
 				background-image: linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
 				background-size: 80px 80px;
-				transform: translateX(-100%);
-				transition: transform 1.5s ease-out 1s; /* Start after 1s */
+				/* MODIFIED: Vertical lines now slide down from the top */
+				transform: translateY(-100%);
+				transition: transform 1.5s ease-out 0.5s; 
 			}
 			.run-opening-animation .grid-background-h,
 			.run-opening-animation .grid-background-v {
@@ -61,11 +64,11 @@
 				margin-top: 40px;
 				position: relative;
 				z-index: 10;
-			}
-			.logo-wrapper {
 				opacity: 0;
-				transform: scale(0.95);
-				transition: all 1.5s ease-in-out 2s; /* Start after 2s */
+				transition: opacity 1.5s ease-in 2s;
+			}
+			.run-opening-animation .logo-container {
+				opacity: 1;
 			}
 			.logo-image {
 				filter: brightness(0) invert(1);
@@ -77,21 +80,8 @@
 				font-size: 80px;
 				font-weight: 700;
 				margin: 0 60px;
-				opacity: 0;
-				animation: spin-and-settle 2s ease-in-out 2s forwards; /* Start after 2s */
 			}
-			.run-opening-animation .logo-wrapper,
-			.run-opening-animation .logo-separator {
-				opacity: 1;
-				transform: scale(1);
-			}
-			@keyframes spin-and-settle {
-				0% { opacity: 0; transform: rotate(-180deg); }
-				70% { opacity: 1; transform: rotate(380deg); }
-				85% { transform: rotate(355deg); }
-				100% { opacity: 1; transform: rotate(360deg); }
-			}
-
+			
 			/* --- Corner Logos for Slide 2 and onward --- */
 			.corner-logos {
 				position: absolute;
@@ -103,7 +93,7 @@
 			.corner-logos .logo-image { height: 40px; }
 			.corner-logos .logo-separator { display: none; }
 
-			/* Navigation Arrow Fix */
+			/* --- Navigation Arrow Fix --- */
 			.reveal .controls .controls-arrow { border-color: var(--tci-white) !important; }
 		</style>
 	</head>
@@ -116,13 +106,9 @@
 					<div class="grid-background-v"></div>
 					<h1>Project Proposition</h1>
 					<div class="logo-container">
-						<div class="logo-wrapper">
-							<img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
-						</div>
+						<img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
 						<span class="logo-separator">x</span>
-						<div class="logo-wrapper">
-							<img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
-						</div>
+						<img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
 					</div>
 				</section>
 
@@ -146,7 +132,6 @@
 				transition: 'slide'
 			});
 
-			// This class only triggers the OPENING animations
 			setTimeout(function() {
 				document.body.classList.add('run-opening-animation');
 			}, 200);
