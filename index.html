@@ -22,42 +22,41 @@
     .reveal .slides section {
       position: relative;
       height: 100%;
-      display: flex; /* Using flexbox for centering */
+      display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      text-align: center;
     }
     .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
       color: var(--tci-white);
       position: relative;
       z-index: 10;
-      transition: opacity 0.5s ease-out; /* For fade-out */
     }
-    
-    /* --- GLOBAL GRID: Two separate layers for independent animation --- */
-    .grid-lines-h, .grid-lines-v {
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      z-index: 0;
+    .reveal h1 { transition: opacity 0.5s ease-out; }
+
+    /* --- Grid Styles & Animation --- */
+    .grid-background-h, .grid-background-v {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;
     }
-    .grid-lines-h {
+    .grid-background-h {
       background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
       background-size: 80px 80px;
       transform: translateX(-100%);
       transition: transform 1.5s ease-out 0.8s;
     }
-    .grid-lines-v {
+    .grid-background-v {
       background-image: linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
       background-size: 80px 80px;
       transform: translateY(-100%);
       transition: transform 1.5s ease-out 0.5s;
     }
-    .run-opening-animation .grid-lines-h,
-    .run-opening-animation .grid-lines-v {
+    .run-opening-animation .grid-background-h,
+    .run-opening-animation .grid-lines-vertical { /* Corrected class name */
       transform: translate(0, 0);
     }
 
-    /* --- TITLE SLIDE LOGOS --- */
+    /* --- Title Slide Logo Styles & Animations --- */
     .logo-container {
       display: flex;
       justify-content: center;
@@ -65,13 +64,10 @@
       margin-top: 40px;
       position: relative;
       z-index: 10;
-      /* Set initial state for opening animation */
       opacity: 0;
-      transition: opacity 1s ease-in 1.5s; /* Fade-out transition */
+      transition: opacity 1s ease-in 1.5s;
     }
-    .run-opening-animation .logo-container {
-      opacity: 1;
-    }
+    .run-opening-animation .logo-container { opacity: 1; }
     .logo-image {
       filter: brightness(0) invert(1);
       height: 150px;
@@ -83,9 +79,6 @@
       font-weight: 700;
       margin: 0 60px;
       opacity: 0;
-      animation: none; /* No animation by default */
-    }
-    .run-opening-animation .logo-separator {
       animation: spin-and-settle 2s ease-in-out 1.8s forwards;
     }
     @keyframes spin-and-settle {
@@ -94,34 +87,47 @@
       85%  { transform: rotate(355deg); }
       100% { opacity: 1; transform: rotate(360deg); }
     }
-
-    /* --- EXIT ANIMATIONS (triggered by JS) --- */
+    
+    /* --- Exit Animation for Title Slide --- */
     .run-exit-animation h1,
     .run-exit-animation .logo-container {
         opacity: 0 !important;
     }
 
-    /* --- CORNER LOGOS (on slide 2) --- */
+    /* --- Corner Logos for Slide 2 and onward --- */
     .corner-logos {
       position: absolute;
       top: 40px; left: 40px; z-index: 10;
       display: flex;
-      flex-direction: column;
-      align-items: flex-start;
+      flex-direction: row; /* MODIFIED: side-by-side */
+      align-items: center;
+      gap: 20px; /* MODIFIED: adds space between logos */
     }
     .corner-logos .logo-image { height: 40px; }
     
-    /* --- Nav Arrow Fix --- */
+    /* --- NEW: Animated line for Slide 2 --- */
+    .animated-line {
+        width: 0;
+        height: 1px;
+        background-color: var(--tci-white);
+        margin: 30px 0;
+        transition: width 0.8s ease-out;
+    }
+    .animated-line.visible { /* .visible is added by reveal.js */
+        width: 50%;
+    }
+
+    /* --- Navigation Arrow Fix --- */
     .reveal .controls .controls-arrow { border-color: var(--tci-white) !important; }
   </style>
 </head>
 <body>
   <div class="reveal">
-    <div class="grid-lines-h"></div>
-    <div class="grid-lines-v"></div>
-
     <div class="slides">
-      <section id="title-slide">
+      
+      <section>
+        <div class="grid-background-h"></div>
+        <div class="grid-background-v"></div>
         <h1>Project Proposition</h1>
         <div class="logo-container">
           <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
@@ -131,12 +137,21 @@
       </section>
 
       <section>
-        <div class="corner-logos">
+        <div class="grid-background-h" style="transform: translate(0,0);"></div>
+        <div class="grid-background-v" style="transform: translate(0,0);"></div>
+        
+        <div class="corner-logos fragment fade-in">
           <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
           <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
         </div>
-        <h2>Agenda</h2>
-        <p>Next, we'll build out the agenda or introduction slide here.</p>
+
+        <div style="width: 60%;"> <h2 class="fragment fade-in">delivering the next big Black + Blum innovation</h2>
+            <div class="animated-line fragment"></div>
+            <h3 class="fragment fade-in">the project</h3>
+            <p class="fragment fade-in" style="font-weight: 300;">
+                the desired outcome of this project is the delivery of silicone tin foil that can be reused
+            </p>
+        </div>
       </section>
     </div>
   </div>
@@ -148,25 +163,18 @@
       transition: 'slide'
     });
 
-    // Trigger the initial "welcome" animation
     setTimeout(function() {
       document.body.classList.add('run-opening-animation');
     }, 200);
 
-    // This custom JS handles the exit animation BEFORE navigating
     function exitAndNavigate() {
-      // Add the exit class to trigger CSS fade-out transitions
       document.body.classList.add('run-exit-animation');
-      
-      // Wait for the fade-out to finish (1s is plenty)
       setTimeout(() => {
         Reveal.next();
-        // Clean up the class immediately after navigating
         document.body.classList.remove('run-exit-animation');
-      }, 1000);
+      }, 500); // Faster exit animation
     }
 
-    // Hijack the 'next' arrow ONLY on the first slide
     let nextArrow = document.querySelector('.navigate-right');
     if (nextArrow) {
       nextArrow.addEventListener('click', function(e) {
