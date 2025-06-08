@@ -99,40 +99,31 @@
 
             .logo-image {
                 filter: brightness(0) invert(1);
-                height: 75px; /* MODIFIED: Increased size by 50% */
-                margin: 0 30px;
+                height: 150px; /* MODIFIED: Logos are now twice as large */
+                margin: 0 60px; /* MODIFIED: Increased space between elements */
             }
 
-            /* --- NEW: 'x' Separator and its Animation --- */
+            /* --- 'x' Separator and its Animation --- */
             .logo-separator {
                 color: var(--tci-white);
-                font-size: 40px;
-                font-weight: 300; /* A lighter weight for a more elegant 'x' */
-                
-                /* Set opacity to 0 so it fades in with the animation */
+                font-size: 80px; /* MODIFIED: Increased size to match logos */
+                font-weight: 700; /* MODIFIED: Increased thickness to bold */
                 opacity: 0; 
-                
-                /* Apply the custom spin animation */
                 animation: spin-and-settle 2s ease-in-out 2.5s forwards;
             }
 
-            /* This is the custom, multi-stage animation for the 'x' */
             @keyframes spin-and-settle {
-                /* Start rotated backwards and invisible */
                 0% {
                     opacity: 0;
                     transform: rotate(-180deg);
                 }
-                /* Spin past the final position (360) to 380deg for an overshoot effect */
                 70% {
                     opacity: 1;
                     transform: rotate(380deg);
                 }
-                /* Bounce back to just under the final position */
                 85% {
                     transform: rotate(355deg);
                 }
-                /* Settle perfectly at the end */
                 100% {
                     opacity: 1;
                     transform: rotate(360deg);
@@ -153,9 +144,7 @@
 					
                     <div class="logo-container">
                         <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
-                        
                         <span class="logo-separator">x</span>
-                        
                         <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
                     </div>
 				</section>
