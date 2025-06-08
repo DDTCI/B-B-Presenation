@@ -13,62 +13,74 @@
 		<style>
 			:root {
 				--tci-white: #FFFFFF;
-				--tci-orange: #FFFFFF;
+				--tci-black: #000000;
+				/* MODIFIED: Orange is now set to the white color value */
+				--tci-orange: #FFFFFF; 
 				--tci-charcoal: #1E1C1D;
 			}
 			.reveal {
 				font-family: 'Montserrat', sans-serif;
+				position: relative;
+				overflow: hidden;
 				background-color: var(--tci-charcoal);
 			}
-			/* MODIFIED: Ensure slides take up the full height */
-			.reveal .slides section {
-				position: relative;
+			.reveal .slides {
+				background: transparent;
+				color: var(--tci-white);
 				text-align: center;
-				height: 100%; 
 			}
 			.reveal h1, .reveal h2, .reveal h3, .reveal h4 {
 				color: var(--tci-orange);
+				text-transform: none;
 				position: relative;
-				z-index: 10;
+				z-index: 2;
 			}
-			/* --- Grid Styles & Animation --- */
-			.grid-background-h, .grid-background-v {
+			.grid-lines-horizontal,
+			.grid-lines-vertical {
+				content: '';
 				position: absolute;
-				top: 0; left: 0; width: 100%; height: 100%;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
 				z-index: 0;
 			}
-			.grid-background-h {
+			.grid-lines-horizontal {
+				/* MODIFIED: RGBA value now uses white (255,255,255) */
 				background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
 				background-size: 80px 80px;
-				/* MODIFIED: Horizontal lines now slide in from the left */
-				transform: translateX(-100%);
-				transition: transform 1.5s ease-out 1s;
+				transform: translateY(-100%);
+				transition: transform 2.5s ease-out;
 			}
-			.grid-background-v {
+			.grid-lines-vertical {
+				/* MODIFIED: RGBA value now uses white (255,255,255) */
 				background-image: linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
 				background-size: 80px 80px;
-				/* MODIFIED: Vertical lines now slide down from the top */
-				transform: translateY(-100%);
-				transition: transform 1.5s ease-out 0.5s; 
+				transform: translateX(-100%);
+				transition: transform 2.5s ease-out 0.8s;
 			}
-			.run-opening-animation .grid-background-h,
-			.run-opening-animation .grid-background-v {
+			.run-animation .grid-lines-horizontal,
+			.run-animation .grid-lines-vertical {
 				transform: translate(0, 0);
 			}
-
-			/* --- Logo Styles & Animations --- */
+			/* --- Logo Styles --- */
 			.logo-container {
 				display: flex;
 				justify-content: center;
 				align-items: center;
 				margin-top: 40px;
 				position: relative;
-				z-index: 10;
-				opacity: 0;
-				transition: opacity 1.5s ease-in 2s;
+				z-index: 2;
 			}
-			.run-opening-animation .logo-container {
+			.logo-wrapper {
+				opacity: 0;
+				transform: scale(0.95);
+				transition: all 1.5s ease-in-out 2.5s;
+			}
+			.run-animation .logo-wrapper,
+			.run-animation .logo-separator {
 				opacity: 1;
+				transform: scale(1);
 			}
 			.logo-image {
 				filter: brightness(0) invert(1);
@@ -80,61 +92,48 @@
 				font-size: 80px;
 				font-weight: 700;
 				margin: 0 60px;
+				opacity: 0;
+				transform: scale(0.95);
+				transition: all 1.5s ease-in-out 2.5s;
 			}
-			
-			/* --- Corner Logos for Slide 2 and onward --- */
-			.corner-logos {
-				position: absolute;
-				top: 40px; left: 40px; z-index: 10;
-				display: flex;
-				flex-direction: column;
-				align-items: flex-start;
-			}
-			.corner-logos .logo-image { height: 40px; }
-			.corner-logos .logo-separator { display: none; }
 
-			/* --- Navigation Arrow Fix --- */
-			.reveal .controls .controls-arrow { border-color: var(--tci-white) !important; }
+			/* --- NEW: White Navigation Arrows --- */
+			.reveal .controls-arrow {
+				/* This targets the default theme's arrows */
+				border-color: var(--tci-white) !important;
+			}
+
 		</style>
 	</head>
 	<body>
 		<div class="reveal">
+			<div class="grid-lines-horizontal"></div>
+			<div class="grid-lines-vertical"></div>
 			<div class="slides">
-				
 				<section>
-					<div class="grid-background-h"></div>
-					<div class="grid-background-v"></div>
 					<h1>Project Proposition</h1>
 					<div class="logo-container">
-						<img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
+						<div class="logo-wrapper">
+							<img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
+						</div>
 						<span class="logo-separator">x</span>
-						<img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
+						<div class="logo-wrapper">
+							<img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
+						</div>
 					</div>
 				</section>
-
 				<section>
-					<div class="grid-background-h" style="transform: translate(0,0);"></div>
-					<div class="grid-background-v" style="transform: translate(0,0);"></div>
-					<div class="corner-logos">
-						<img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
-						<img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
-					</div>
 					<h2>Agenda</h2>
 					<p>Next, we'll build out the agenda or introduction slide here.</p>
 				</section>
 			</div>
 		</div>
-
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
 		<script>
-			Reveal.initialize({
-				hash: true,
-				transition: 'slide'
-			});
-
+			Reveal.initialize({ hash: true, plugins: [] });
 			setTimeout(function() {
-				document.body.classList.add('run-opening-animation');
-			}, 200);
+				document.querySelector('body').classList.add('run-animation');
+			}, 500);
 		</script>
 	</body>
 </html>
