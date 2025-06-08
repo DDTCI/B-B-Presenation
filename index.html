@@ -13,9 +13,7 @@
 		<style>
 			:root {
 				--tci-white: #FFFFFF;
-				--tci-black: #000000;
-				/* MODIFIED: Orange is now set to the white color value */
-				--tci-orange: #FFFFFF; 
+				--tci-orange: #FFFFFF;
 				--tci-charcoal: #1E1C1D;
 			}
 			.reveal {
@@ -46,14 +44,12 @@
 				z-index: 0;
 			}
 			.grid-lines-horizontal {
-				/* MODIFIED: RGBA value now uses white (255,255,255) */
 				background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
 				background-size: 80px 80px;
 				transform: translateY(-100%);
 				transition: transform 2.5s ease-out;
 			}
 			.grid-lines-vertical {
-				/* MODIFIED: RGBA value now uses white (255,255,255) */
 				background-image: linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
 				background-size: 80px 80px;
 				transform: translateX(-100%);
@@ -63,43 +59,64 @@
 			.run-animation .grid-lines-vertical {
 				transform: translate(0, 0);
 			}
-			/* --- Logo Styles --- */
+
+			/* --- NEW: Global Logo Animation --- */
+
+			/* This container now lives globally and has two states */
 			.logo-container {
+				/* This is the FINAL state (top-left corner) */
+				position: absolute;
+				top: 40px;
+				left: 40px;
+				z-index: 10;
 				display: flex;
+				/* Stacks them vertically in the corner */
+				flex-direction: column; 
+				align-items: flex-start;
+				/* Animate any changes over 1 second */
+				transition: all 1s ease-in-out;
+			}
+			.logo-container .logo-image {
+				/* Final logo size */
+				height: 40px; 
+				width: auto;
+				filter: brightness(0) invert(1);
+				transition: all 1s ease-in-out;
+			}
+			.logo-container .logo-separator {
+				/* The 'x' is hidden in the final state */
+				display: none; 
+			}
+
+			/* This is the INITIAL state, ONLY for the title slide */
+			.state-title-slide .logo-container {
+				/* Start in the center of the page */
+				top: 50%;
+				left: 50%;
+				width: 100%;
+				transform: translate(-50%, -50%);
+				flex-direction: row; /* Arrange side-by-side */
 				justify-content: center;
 				align-items: center;
-				margin-top: 40px;
-				position: relative;
-				z-index: 2;
 			}
-			.logo-wrapper {
-				opacity: 0;
-				transform: scale(0.95);
-				transition: all 1.5s ease-in-out 2.5s;
-			}
-			.run-animation .logo-wrapper,
-			.run-animation .logo-separator {
-				opacity: 1;
-				transform: scale(1);
-			}
-			.logo-image {
-				filter: brightness(0) invert(1);
+			.state-title-slide .logo-container .logo-image {
+				/* Initial logo size */
 				height: 150px;
-				width: auto;
+				margin: 0 60px;
 			}
-			.logo-separator {
+			.state-title-slide .logo-container .logo-separator {
+				/* The 'x' is visible and styled on the title slide */
+				display: block;
 				color: var(--tci-white);
 				font-size: 80px;
 				font-weight: 700;
-				margin: 0 60px;
-				opacity: 0;
-				transform: scale(0.95);
-				transition: all 1.5s ease-in-out 2.5s;
 			}
-
-			/* --- NEW: White Navigation Arrows --- */
-			.reveal .controls-arrow {
-				/* This targets the default theme's arrows */
+			
+			/* NEW: White Navigation Arrows Fix */
+			.reveal .controls button {
+				color: var(--tci-white);
+			}
+			.reveal .controls .controls-arrow {
 				border-color: var(--tci-white) !important;
 			}
 
@@ -109,31 +126,34 @@
 		<div class="reveal">
 			<div class="grid-lines-horizontal"></div>
 			<div class="grid-lines-vertical"></div>
+			
+			<div class="logo-container">
+				<img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
+				<span class="logo-separator">x</span>
+				<img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
+			</div>
+			
 			<div class="slides">
-				<section>
+				
+				<section data-state="title-slide">
 					<h1>Project Proposition</h1>
-					<div class="logo-container">
-						<div class="logo-wrapper">
-							<img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
-						</div>
-						<span class="logo-separator">x</span>
-						<div class="logo-wrapper">
-							<img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
-						</div>
-					</div>
-				</section>
+					</section>
+
 				<section>
 					<h2>Agenda</h2>
 					<p>Next, we'll build out the agenda or introduction slide here.</p>
 				</section>
 			</div>
 		</div>
+
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
 		<script>
-			Reveal.initialize({ hash: true, plugins: [] });
-			setTimeout(function() {
-				document.querySelector('body').classList.add('run-animation');
-			}, 500);
+			// MODIFIED: Added transition: 'slide'
+			Reveal.initialize({
+				hash: true,
+				transition: 'slide', // 'slide', 'fade', 'convex', 'zoom'
+				plugins: []
+			});
 		</script>
 	</body>
 </html>
