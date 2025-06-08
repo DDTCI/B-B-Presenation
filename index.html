@@ -89,44 +89,39 @@
                 margin-top: 40px;
                 position: relative;
                 z-index: 2;
-                /* MODIFIED: Animation is now on individual logos, not the container */
-            }
-
-            /* MODIFIED: This class defines the final state for the logos */
-            .run-animation .logo-image {
-                opacity: 1;
-                transform: translateX(0);
             }
 
             .logo-image {
                 filter: brightness(0) invert(1);
                 height: 150px;
-                margin: 0; /* MODIFIED: Margin is now on the separator */
-
-                /* NEW: Set up initial state and transition for each logo */
+                margin: 0;
                 opacity: 0;
                 transition: transform 1.5s ease-out 2.5s, opacity 1.5s ease-in 2.5s;
             }
             
-            /* NEW: Target the first logo to start from the left */
+            /* Set starting positions */
             .logo-container img:first-of-type {
                 transform: translateX(-150px);
             }
-
-            /* NEW: Target the second logo to start from the right */
             .logo-container img:last-of-type {
                 transform: translateX(150px);
             }
 
+            /* MODIFIED: Replaced the old rule with these more specific ones to fix the bug */
+            .run-animation .logo-container img:first-of-type,
+            .run-animation .logo-container img:last-of-type {
+                opacity: 1;
+                transform: translateX(0);
+            }
 
             /* --- 'x' Separator and its Animation --- */
             .logo-separator {
                 color: var(--tci-white);
                 font-size: 80px;
                 font-weight: 700;
+                margin: 0 120px;
                 opacity: 0; 
                 animation: spin-and-settle 2s ease-in-out 2.5s forwards;
-                margin: 0 120px; /* MODIFIED: Increased margin to double the gap */
             }
 
             @keyframes spin-and-settle {
@@ -146,7 +141,6 @@
                     transform: rotate(360deg);
                 }
             }
-
 		</style>
 	</head>
 	<body>
@@ -170,7 +164,6 @@
 					<h2>Agenda</h2>
 					<p>Next, we'll build out the agenda or introduction slide here.</p>
 				</section>
-
 			</div>
 		</div>
 
@@ -181,7 +174,6 @@
             setTimeout(function() {
                 document.querySelector('body').classList.add('run-animation');
             }, 500);
-
 		</script>
 	</body>
 </html>
