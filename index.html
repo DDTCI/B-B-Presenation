@@ -32,11 +32,6 @@
 				color: var(--tci-white);
 			}
 
-			/* THIS IS THE KEY: Makes the slide the positioning 'anchor' */
-			.reveal .slides section {
-				position: relative;
-			}
-
 			.reveal h1,
 			.reveal h2,
 			.reveal h3,
@@ -49,19 +44,26 @@
 				color: var(--tci-orange);
 			}
 
-			/* --- SIMPLIFIED Grid Animation Styles --- */
+			/* --- DECOUPLED Grid Animation Styles --- */
 			.grid-overlay {
-				/* This tells the grid to float relative to its anchor */
+                /* Positioned relative to the whole .reveal container */
 				position: absolute;
-				/* This locks it to the top right corner of the anchor */
 				top: 0;
 				right: 0;
-
 				width: 45vw;
 				height: 25vh;
-				z-index: 0; /* Ensures it is behind the text */
+				z-index: 0; /* Behind slide content */
+
+				/* Hide the grid by default */
+				display: none;
 			}
 			
+            /* This is the magic rule. reveal.js adds a class to the body
+               based on the slide's "data-state". We use it to show our grid. */
+			body.state-has-grid .grid-overlay {
+				display: block;
+			}
+
 			.grid-overlay::before {
 				content: '';
 				position: absolute;
@@ -92,9 +94,9 @@
 		<div class="reveal">
 			<div class="slides">
 				
-				<section>
-					<div class="grid-overlay"></div>
-					
+				<div class="grid-overlay"></div>
+
+				<section data-state="has-grid">
 					<h1>Project Proposition</h1>
 					<p>Presented to <span class="text-orange">Black + Blum</span></p>
 					<br>
@@ -105,6 +107,7 @@
 					<h2>Agenda</h2>
 					<p>Next, we'll build out the agenda or introduction slide here.</p>
 				</section>
+
 			</div>
 		</div>
 
