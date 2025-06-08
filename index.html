@@ -1,176 +1,177 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-		<title>TCI Culinary Proposition for Black + Blum</title>
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reset.min.css">
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
-		<link rel="preconnect" href="https://fonts.googleapis.com">
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/black.css" id="theme">
-		<style>
-			:root {
-				--tci-white: #FFFFFF;
-				--tci-black: #000000;
-				--tci-orange: #FFFFFF; 
-				--tci-charcoal: #1E1C1D;
-			}
-			.reveal {
-				font-family: 'Montserrat', sans-serif;
-				position: relative;
-				overflow: hidden;
-				background-color: var(--tci-charcoal);
-			}
-			.reveal .slides {
-				background: transparent;
-				color: var(--tci-white);
-				text-align: center;
-			}
-			.reveal h1, .reveal h2, .reveal h3, .reveal h4 {
-				color: var(--tci-orange);
-				text-transform: none;
-				position: relative;
-				z-index: 2;
-			}
-			/* fadeable titles */
-			.reveal .slides section h1,
-			.reveal .slides section h2 {
-				transition: opacity 0.5s ease-out;
-			}
-			.grid-lines-horizontal,
-			.grid-lines-vertical {
-				position: absolute;
-				top: 0;
-				left: 0;
-				width: 100%;
-				height: 100%;
-				z-index: 0;
-			}
-			.grid-lines-horizontal {
-				background-image: linear-gradient(to bottom, rgba(255,255,255,0.1) 1px, transparent 1px);
-				background-size: 80px 80px;
-				transform: translateY(-100%);
-				transition: transform 2.5s ease-out;
-			}
-			.grid-lines-vertical {
-				background-image: linear-gradient(to right, rgba(255,255,255,0.1) 1px, transparent 1px);
-				background-size: 80px 80px;
-				transform: translateX(-100%);
-				transition: transform 2.5s ease-out 0.8s;
-			}
-			.run-animation .grid-lines-horizontal,
-			.run-animation .grid-lines-vertical {
-				transform: translate(0, 0);
-			}
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>TCI Culinary Proposition for Black + Blum</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reset.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/black.css" id="theme">
 
-			/* --- Logo & “x” Styles (no long delay) --- */
-			.logo-container {
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				margin-top: 40px;
-				position: relative;
-				z-index: 2;
-			}
-			.logo-wrapper,
-			.logo-separator {
-				opacity: 0;
-				transform: scale(0.95);
-				transition: all 0.5s ease-out;
-			}
-			.run-animation .logo-wrapper,
-			.run-animation .logo-separator {
-				opacity: 1;
-				transform: scale(1);
-			}
-			.logo-image {
-				filter: brightness(0) invert(1);
-				height: 150px;
-				width: auto;
-			}
-			.logo-separator {
-				color: var(--tci-white);
-				font-size: 80px;
-				font-weight: 700;
-				margin: 0 60px;
-			}
+  <style>
+    :root {
+      --tci-white: #FFFFFF;
+      --tci-charcoal: #1E1C1D;
+    }
+    .reveal {
+      font-family: 'Montserrat', sans-serif;
+      position: relative;
+      overflow: hidden;
+      background-color: var(--tci-charcoal);
+    }
+    .reveal .slides {
+      background: transparent;
+      color: var(--tci-white);
+      text-align: center;
+    }
+    .reveal h1, .reveal h2 {
+      color: var(--tci-white);
+      text-transform: none;
+      position: relative;
+      z-index: 2;
+      transition: opacity 0.5s ease-out;
+    }
 
-			/* --- White Navigation Arrows --- */
-			.reveal .controls-arrow {
-				border-color: var(--tci-white) !important;
-			}
-		</style>
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="grid-lines-horizontal"></div>
-			<div class="grid-lines-vertical"></div>
-			<div class="slides">
-				<section>
-					<h1>Project Proposition</h1>
-					<div class="logo-container">
-						<div class="logo-wrapper">
-							<img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
-						</div>
-						<span class="logo-separator">x</span>
-						<div class="logo-wrapper">
-							<img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
-						</div>
-					</div>
-				</section>
-				<section>
-					<h2>Agenda</h2>
-					<p>Next, we'll build out the agenda or introduction slide here.</p>
-				</section>
-			</div>
-		</div>
+    /* grid animation */
+    .grid-lines-horizontal, .grid-lines-vertical {
+      position: absolute; top:0; left:0; width:100%; height:100%; z-index:0;
+    }
+    .grid-lines-horizontal {
+      background-image: linear-gradient(to bottom, rgba(255,255,255,0.1) 1px, transparent 1px);
+      background-size: 80px 80px;
+      transform: translateY(-100%);
+      transition: transform 2.5s ease-out;
+    }
+    .grid-lines-vertical {
+      background-image: linear-gradient(to right, rgba(255,255,255,0.1) 1px, transparent 1px);
+      background-size: 80px 80px;
+      transform: translateX(-100%);
+      transition: transform 2.5s ease-out 0.8s;
+    }
+    .run-animation .grid-lines-horizontal,
+    .run-animation .grid-lines-vertical {
+      transform: translate(0, 0);
+    }
 
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
-		<script>
-			// 1. Init + entrance
-			Reveal.initialize({ hash: true, plugins: [] });
-			setTimeout(() => document.body.classList.add('run-animation'), 500);
+    /* logo wrapper animates simply */
+    .logo-wrapper {
+      opacity: 0;
+      transform: scale(0.95);
+      transition: all 0.5s ease-out;
+    }
+    .run-animation .logo-wrapper {
+      opacity: 1;
+      transform: scale(1);
+    }
 
-			// 2. Exit animation + navigation helper
-			function exitAndNavigate(direction) {
-				document.body.classList.remove('run-animation');
-				const current = document.querySelector('.slides section.present');
-				const title   = current && current.querySelector('h1, h2');
-				if (title) title.style.opacity = 0;
-				// wait for the 0.5s .logo & title transitions
-				setTimeout(() => {
-					if (direction === 'next') Reveal.next();
-					else                     Reveal.prev();
-					// re-trigger entrance on return
-					setTimeout(() => {
-						document.body.classList.add('run-animation');
-						if (title) title.style.opacity = 1;
-					}, 100);
-				}, 600);
-			}
+    /* X “spin” keyframes */
+    @keyframes spin-entry {
+      0%   { opacity: 0; transform: scale(0.95) rotate(0deg); }
+      20%  { opacity: 1; transform: scale(1)    rotate(360deg); }
+      40%  { transform: scale(1)    rotate(0deg); }
+      60%  { transform: scale(1)    rotate(-360deg); }
+      80%  { transform: scale(1)    rotate(0deg); }
+      100% { opacity: 1; transform: scale(1)    rotate(0deg); }
+    }
 
-			// 3. Hook the “next” arrow on slide 1
-			document.querySelector('.controls .navigate-right')
-				?.addEventListener('click', e => {
-					const { h, v } = Reveal.getIndices();
-					if (h === 0 && v === 0) {
-						e.preventDefault();
-						exitAndNavigate('next');
-					}
-				});
+    .logo-separator {
+      display: inline-block;
+      opacity: 0;
+    }
+    .run-animation .logo-separator {
+      animation: spin-entry 2s ease-in-out forwards;
+    }
+    .exit-animation .logo-separator {
+      animation: spin-entry 2s ease-in-out reverse forwards;
+    }
 
-			// 4. Also catch Right-Arrow / PageDown
-			document.addEventListener('keydown', e => {
-				if ((e.key === 'ArrowRight' || e.key === 'PageDown')) {
-					const { h, v } = Reveal.getIndices();
-					if (h === 0 && v === 0) {
-						e.preventDefault();
-						exitAndNavigate('next');
-					}
-				}
-			});
-		</script>
-	</body>
+    /* white nav arrows */
+    .reveal .controls-arrow {
+      border-color: var(--tci-white) !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="grid-lines-horizontal"></div>
+    <div class="grid-lines-vertical"></div>
+    <div class="slides">
+      <section>
+        <h1>Project Proposition</h1>
+        <div class="logo-container">
+          <div class="logo-wrapper">
+            <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png"
+                 alt="TCI Products Logo" class="logo-image">
+          </div>
+          <span class="logo-separator">x</span>
+          <div class="logo-wrapper">
+            <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg"
+                 alt="Black + Blum Logo" class="logo-image">
+          </div>
+        </div>
+      </section>
+      <section>
+        <h2>Agenda</h2>
+        <p>Next, we'll build out the agenda or introduction slide here.</p>
+      </section>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
+  <script>
+    // 1. Initialize + entrance
+    Reveal.initialize({ hash: true, plugins: [] });
+    setTimeout(() => document.body.classList.add('run-animation'), 500);
+
+    // 2. Exit + reverse-spin then navigate
+    function exitAndNavigate(direction) {
+      document.body.classList.remove('run-animation');
+      document.body.classList.add('exit-animation');
+
+      // fade out title
+      const slide = document.querySelector('.slides section.present');
+      const title = slide.querySelector('h1, h2');
+      if (title) title.style.opacity = 0;
+
+      // wait for spin (2s) & fade (0.5s) ⇒ ~2s
+      setTimeout(() => {
+        if (direction === 'next') Reveal.next();
+        else                     Reveal.prev();
+
+        // clean up exit class
+        document.body.classList.remove('exit-animation');
+
+        // re-trigger entrance for revisits
+        setTimeout(() => {
+          document.body.classList.add('run-animation');
+          if (title) title.style.opacity = 1;
+        }, 100);
+      }, 2100);
+    }
+
+    // 3. Hook “next” arrow on slide 1
+    document.querySelector('.controls .navigate-right')
+      ?.addEventListener('click', e => {
+        const { h, v } = Reveal.getIndices();
+        if (h === 0 && v === 0) {
+          e.preventDefault();
+          exitAndNavigate('next');
+        }
+      });
+
+    // 4. Also catch Right-Arrow / PageDown keys
+    document.addEventListener('keydown', e => {
+      if (['ArrowRight','PageDown'].includes(e.key)) {
+        const { h, v } = Reveal.getIndices();
+        if (h === 0 && v === 0) {
+          e.preventDefault();
+          exitAndNavigate('next');
+        }
+      }
+    });
+  </script>
+</body>
 </html>
