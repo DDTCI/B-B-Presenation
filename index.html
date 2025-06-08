@@ -27,12 +27,32 @@
       color: var(--tci-white);
       text-align: center;
     }
-    .reveal h1, .reveal h2 {
+    /* FIX: Added missing h3, h4 and section height */
+    .reveal .slides section {
+        position: relative;
+        height: 100%;
+    }
+    .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
       color: var(--tci-white);
       text-transform: none;
       position: relative;
       z-index: 2;
       transition: opacity 0.5s ease-out;
+    }
+    /* FIX: Added logo container from previous versions */
+    .logo-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 40px;
+        position: relative;
+        z-index: 2;
+    }
+    /* FIX: Added logo image styles */
+    .logo-image {
+        filter: brightness(0) invert(1);
+        height: 150px;
+        width: auto;
     }
 
     /* grid animation */
@@ -70,14 +90,21 @@
     /* X “spin” keyframes */
     @keyframes spin-entry {
       0%   { opacity: 0; transform: scale(0.95) rotate(0deg); }
-      20%  { opacity: 1; transform: scale(1)    rotate(360deg); }
-      40%  { transform: scale(1)    rotate(0deg); }
-      60%  { transform: scale(1)    rotate(-360deg); }
-      80%  { transform: scale(1)    rotate(0deg); }
-      100% { opacity: 1; transform: scale(1)    rotate(0deg); }
+      20%  { opacity: 1; transform: scale(1)   rotate(360deg); }
+      40%  { transform: scale(1)   rotate(0deg); }
+      60%  { transform: scale(1)   rotate(-360deg); }
+      80%  { transform: scale(1)   rotate(0deg); }
+      100% { opacity: 1; transform: scale(1)   rotate(0deg); }
     }
 
     .logo-separator {
+      /* MODIFIED: Restored the visual styles for the 'x' */
+      color: var(--tci-white);
+      font-size: 80px;
+      font-weight: 700;
+      margin: 0 60px;
+      /* --- End of restored styles --- */
+      
       display: inline-block;
       opacity: 0;
     }
@@ -89,7 +116,7 @@
     }
 
     /* white nav arrows */
-    .reveal .controls-arrow {
+    .reveal .controls .controls-arrow {
       border-color: var(--tci-white) !important;
     }
   </style>
@@ -123,7 +150,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
   <script>
     // 1. Initialize + entrance
-    Reveal.initialize({ hash: true, plugins: [] });
+    Reveal.initialize({ hash: true, transition: 'slide', plugins: [] });
     setTimeout(() => document.body.classList.add('run-animation'), 500);
 
     // 2. Exit + reverse-spin then navigate
@@ -139,7 +166,7 @@
       // wait for spin (2s) & fade (0.5s) ⇒ ~2s
       setTimeout(() => {
         if (direction === 'next') Reveal.next();
-        else                     Reveal.prev();
+        else                    Reveal.prev();
 
         // clean up exit class
         document.body.classList.remove('exit-animation');
@@ -153,6 +180,7 @@
     }
 
     // 3. Hook “next” arrow on slide 1
+    // MODIFIED: Added a null check for safety
     document.querySelector('.controls .navigate-right')
       ?.addEventListener('click', e => {
         const { h, v } = Reveal.getIndices();
@@ -166,7 +194,7 @@
     document.addEventListener('keydown', e => {
       if (['ArrowRight','PageDown'].includes(e.key)) {
         const { h, v } = Reveal.getIndices();
-        if (h === 0 && v === 0) {
+        if (h === 0 && v === 0 && !document.body.classList.contains('exit-animation')) { // Prevent double-trigger
           e.preventDefault();
           exitAndNavigate('next');
         }
