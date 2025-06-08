@@ -27,10 +27,13 @@
 				font-family: 'Montserrat', sans-serif;
                 position: relative;
                 overflow: hidden;
+                /* MODIFIED: The main background is now only on the .reveal container */
+                background-color: var(--tci-charcoal);
 			}
             
-			.reveal, .reveal .slides {
-				background-color: var(--tci-charcoal);
+            /* MODIFIED: This makes the slide area transparent to see the grid behind it */
+			.reveal .slides {
+				background: transparent;
 				color: var(--tci-white);
 			}
 
@@ -41,16 +44,15 @@
 				color: var(--tci-orange);
 				text-transform: none;
                 position: relative;
-                z-index: 2; /* Ensures text is on top of both grid layers */
+                z-index: 2; 
 			}
 			
 			.text-orange {
 				color: var(--tci-orange);
 			}
 
-            /* --- NEW: Two-Layer Grid Animation using DIVs --- */
+            /* --- Two-Layer Grid Animation using DIVs --- */
 
-            /* Shared styles for both grid line DIVs */
 			.grid-lines-horizontal,
             .grid-lines-vertical {
                 content: '';
@@ -62,23 +64,20 @@
                 z-index: 0;
             }
 
-            /* Layer 1: HORIZONTAL LINES */
             .grid-lines-horizontal {
                 background-image: linear-gradient(to bottom, rgba(255, 160, 42, 0.1) 1px, transparent 1px);
-				background-size: 30px 30px;
+				background-size: 80px 80px; /* MODIFIED: Wider grid lines */
                 transform: translateY(-100%);
-                transition: transform 1.2s ease-out;
+                transition: transform 2.5s ease-out; /* MODIFIED: Slower animation */
             }
 
-            /* Layer 2: VERTICAL LINES */
             .grid-lines-vertical {
                 background-image: linear-gradient(to right, rgba(255, 160, 42, 0.1) 1px, transparent 1px);
-				background-size: 30px 30px;
+				background-size: 80px 80px; /* MODIFIED: Wider grid lines */
                 transform: translateX(-100%);
-                transition: transform 1.2s ease-out 0.4s; /* 0.4s delay */
+                transition: transform 2.5s ease-out 0.8s; /* MODIFIED: Slower animation with a longer delay */
             }
 
-            /* This class triggers the animation for BOTH layers */
             .run-animation .grid-lines-horizontal {
                 transform: translateY(0);
             }
@@ -114,7 +113,6 @@
 		<script>
 			Reveal.initialize({ hash: true, plugins: [] });
 
-            // This JavaScript triggers the animation by adding the "run-animation" class
             setTimeout(function() {
                 document.querySelector('body').classList.add('run-animation');
             }, 500);
