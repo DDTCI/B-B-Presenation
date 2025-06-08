@@ -82,11 +82,11 @@
       font-size: 80px;
       font-weight: 700;
       margin: 0 60px;
-      opacity: 0;
+      opacity: 0; 
     }
-    /* MODIFIED: The animation now starts after a longer delay */
     .run-opening-animation .logo-separator {
-      animation: spin-and-settle 2s ease-in-out 3s forwards;
+      /* MODIFIED: The animation delay now matches the fade-in of the container */
+      animation: spin-and-settle 2s ease-in-out 1.5s forwards;
     }
     @keyframes spin-and-settle {
       0%   { opacity: 0; transform: rotate(-180deg); }
@@ -104,7 +104,9 @@
       align-items: flex-start;
       gap: 10px;
     }
-    .corner-logos .logo-image { height: 40px; }
+    .corner-logos .logo-image { 
+      height: 40px; 
+    }
     
     /* --- Nav Arrow Fix --- */
     .reveal .controls .controls-arrow { border-color: var(--tci-white) !important; }
@@ -145,7 +147,7 @@
       transition: 'slide'
     });
 
-    // This script only runs once on page load to trigger the opening animation
+    // This triggers the opening animation
     setTimeout(function() {
       document.body.classList.add('run-opening-animation');
     }, 200);
