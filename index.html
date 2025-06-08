@@ -4,17 +4,17 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 		<title>TCI Culinary Proposition for Black + Blum</title>
-		<!-- Stylesheets -->
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reset.min.css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/black.css" id="theme">
-		<!-- Custom Styles -->
 		<style>
 			:root {
 				--tci-white: #FFFFFF;
+				--tci-black: #000000;
+				/* MODIFIED: Orange is now set to the white color value */
 				--tci-orange: #FFFFFF; 
 				--tci-charcoal: #1E1C1D;
 			}
@@ -29,47 +29,46 @@
 				color: var(--tci-white);
 				text-align: center;
 			}
-			.reveal .slides section {
-				position: relative;
-				height: 100%;
-			}
-			.reveal h1 {
+			.reveal h1, .reveal h2, .reveal h3, .reveal h4 {
 				color: var(--tci-orange);
-				position: relative;
-				z-index: 2;
-				/* Add transition for the fade-out effect */
-				transition: opacity 0.8s ease-out;
-			}
-			.reveal h2, .reveal h3, .reveal h4 {
-				color: var(--tci-orange);
+				text-transform: none;
 				position: relative;
 				z-index: 2;
 			}
-			/* --- Grid Styles & Animation --- */
+			/* make slide titles fadeable on exit */
+			.reveal .slides section h1,
+			.reveal .slides section h2 {
+				transition: opacity 0.5s ease-out;
+			}
 			.grid-lines-horizontal,
 			.grid-lines-vertical {
 				content: '';
 				position: absolute;
-				top: 0; left: 0; width: 100%; height: 100%;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
 				z-index: 0;
 			}
 			.grid-lines-horizontal {
+				/* MODIFIED: RGBA value now uses white (255,255,255) */
 				background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
 				background-size: 80px 80px;
-				transform: translateX(-100%);
-				transition: transform 1.5s ease-out 0.8s;
+				transform: translateY(-100%);
+				transition: transform 2.5s ease-out;
 			}
 			.grid-lines-vertical {
+				/* MODIFIED: RGBA value now uses white (255,255,255) */
 				background-image: linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
 				background-size: 80px 80px;
-				transform: translateY(-100%);
-				transition: transform 1.5s ease-out 0.5s;
+				transform: translateX(-100%);
+				transition: transform 2.5s ease-out 0.8s;
 			}
 			.run-animation .grid-lines-horizontal,
 			.run-animation .grid-lines-vertical {
 				transform: translate(0, 0);
 			}
-			/* --- Logo Styles & Animations --- */
+			/* --- Logo Styles --- */
 			.logo-container {
 				display: flex;
 				justify-content: center;
@@ -77,11 +76,16 @@
 				margin-top: 40px;
 				position: relative;
 				z-index: 2;
-				opacity: 0;
-				transition: opacity 1.5s ease-in 2s;
 			}
-			.run-animation .logo-container {
+			.logo-wrapper {
+				opacity: 0;
+				transform: scale(0.95);
+				transition: all 1.5s ease-in-out 2.5s;
+			}
+			.run-animation .logo-wrapper,
+			.run-animation .logo-separator {
 				opacity: 1;
+				transform: scale(1);
 			}
 			.logo-image {
 				filter: brightness(0) invert(1);
@@ -94,60 +98,24 @@
 				font-weight: 700;
 				margin: 0 60px;
 				opacity: 0;
-				/* Set intro animation to run once */
-				animation: spin-and-settle 2s ease-in-out 2s forwards;
-			}
-			@keyframes spin-and-settle {
-				0%   { opacity: 0; transform: rotate(-180deg); }
-				70%  { opacity: 1; transform: rotate(380deg); }
-				85%  { transform: rotate(355deg); }
-				100% { opacity: 1; transform: rotate(360deg); }
+				transform: scale(0.95);
+				transition: all 1.5s ease-in-out 2.5s;
 			}
 
-			/* --- Corner Logos for Slide 2 and onward --- */
-			.corner-logos {
-				position: absolute;
-				top: 40px; left: 40px; z-index: 10;
-				display: flex;
-				flex-direction: column;
-				align-items: flex-start;
-			}
-			.corner-logos .logo-image { height: 40px; }
-			
-			/* --- Navigation Arrow Fix --- */
-			.reveal .controls .controls-arrow { border-color: var(--tci-white) !important; }
-			
-			/* --- NEW: Outro Animations for Slide 1 --- */
-			
-			/* When the first slide becomes a 'past' slide, trigger these styles */
-			.reveal .slides section.past h1,
-			.reveal .slides section.past .logo-container {
-				opacity: 0;
-			}
-
-			.reveal .slides section.past .logo-separator {
-				/* Apply the new reverse-spin animation */
-				animation: spin-out-reverse 1.5s ease-in forwards;
-			}
-
-			/* This is the new animation for the 'x' to spin OUT in reverse */
-			@keyframes spin-out-reverse {
-				0%   { opacity: 1; transform: rotate(360deg); }
-				15%  { transform: rotate(355deg); }
-				30%  { transform: rotate(380deg); }
-				100% { opacity: 0; transform: rotate(-180deg); }
+			/* --- White Navigation Arrows --- */
+			.reveal .controls-arrow {
+				/* This targets the default theme's arrows */
+				border-color: var(--tci-white) !important;
 			}
 
 		</style>
 	</head>
 	<body>
 		<div class="reveal">
+			<div class="grid-lines-horizontal"></div>
+			<div class="grid-lines-vertical"></div>
 			<div class="slides">
-				
-				<!-- SLIDE 1 -->
 				<section>
-					<div class="grid-lines-horizontal"></div>
-					<div class="grid-lines-vertical"></div>
 					<h1>Project Proposition</h1>
 					<div class="logo-container">
 						<div class="logo-wrapper">
@@ -159,15 +127,7 @@
 						</div>
 					</div>
 				</section>
-
-				<!-- SLIDE 2 -->
 				<section>
-					<div class="grid-lines-horizontal" style="transform: translate(0,0);"></div>
-					<div class="grid-lines-vertical" style="transform: translate(0,0);"></div>
-					<div class="corner-logos">
-						<img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
-						<img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
-					</div>
 					<h2>Agenda</h2>
 					<p>Next, we'll build out the agenda or introduction slide here.</p>
 				</section>
@@ -176,14 +136,52 @@
 
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
 		<script>
-			Reveal.initialize({
-				hash: true,
-				transition: 'slide'
-			});
+			// Initialize Reveal.js and trigger entrance animation
+			Reveal.initialize({ hash: true, plugins: [] });
+			setTimeout(() => document.body.classList.add('run-animation'), 500);
 
-			setTimeout(function() {
-				document.body.classList.add('run-animation');
-			}, 200);
+			// Exit animation + navigation helper
+			function exitAndNavigate(direction) {
+				// reverse grid & logo
+				document.body.classList.remove('run-animation');
+				// fade out current title
+				const current = document.querySelector('.slides section.present');
+				const title   = current && current.querySelector('h1, h2');
+				if (title) title.style.opacity = 0;
+
+				// wait for exit animations (grid 2.5s + fade 0.5s ≈ 600ms)
+				setTimeout(() => {
+					if (direction === 'next') Reveal.next();
+					else                     Reveal.prev();
+
+					// re-trigger entrance on the new slide
+					setTimeout(() => {
+						document.body.classList.add('run-animation');
+						if (title) title.style.opacity = 1;
+					}, 100);
+				}, 600);
+			}
+
+			// Intercept the "next" arrow click on slide 1
+			document.querySelector('.controls .navigate-right')
+				?.addEventListener('click', e => {
+					const { h, v } = Reveal.getIndices();
+					if (h === 0 && v === 0) {
+						e.preventDefault();
+						exitAndNavigate('next');
+					}
+				});
+
+			// Also catch Right-Arrow / PageDown keys for slide 1
+			document.addEventListener('keydown', e => {
+				if ((e.key === 'ArrowRight' || e.key === 'PageDown')) {
+					const { h, v } = Reveal.getIndices();
+					if (h === 0 && v === 0) {
+						e.preventDefault();
+						exitAndNavigate('next');
+					}
+				}
+			});
 		</script>
 	</body>
 </html>
