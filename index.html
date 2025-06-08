@@ -25,9 +25,7 @@
 
 			.reveal {
 				font-family: 'Montserrat', sans-serif;
-                /* This is important to contain the pseudo-element */
                 position: relative;
-                /* Hides the grid until it slides in */
                 overflow: hidden;
 			}
             
@@ -42,7 +40,7 @@
 			.reveal h4 {
 				color: var(--tci-orange);
 				text-transform: none;
-                position: relative; /* Ensures text stays on top of the grid */
+                position: relative;
                 z-index: 1;
 			}
 			
@@ -65,21 +63,19 @@
 					linear-gradient(to bottom, rgba(255, 160, 42, 0.1) 1px, transparent 1px);
 				background-size: 30px 30px;
 
-                /* Apply the new, more reliable animation */
-                animation: slideInLayer 1.5s 0.5s ease-out forwards;
+                /* Set the starting position of the layer off-screen */
+                transform: translate(-100%, -100%);
+
+                /* Tell the layer to animate any changes to its transform property */
+                transition: transform 1.5s ease-out;
             }
 
-            /* UPDATED: Keyframes using transform for smooth animation */
-            @keyframes slideInLayer {
-                from {
-                    /* Start the entire layer off-screen to the top-left */
-                    transform: translate(-100%, -100%);
-                }
-                to {
-                    /* End with the layer in its correct position */
-                    transform: translate(0, 0);
-                }
+            /* This new class defines the FINAL position for our grid layer */
+            .grid-animation-start .reveal::before {
+                transform: translate(0, 0);
             }
+
+            /* We removed the @keyframes animation entirely */
 
 		</style>
 	</head>
@@ -105,6 +101,14 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
 		<script>
 			Reveal.initialize({ hash: true, plugins: [] });
+
+            // --- NEW: JavaScript to trigger the animation ---
+            // After a 500ms (half-second) delay...
+            setTimeout(function() {
+                // ...find the main 'reveal' container and add our new class to it.
+                document.querySelector('body').classList.add('grid-animation-start');
+            }, 500);
+
 		</script>
 	</body>
 </html>
