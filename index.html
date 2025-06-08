@@ -23,147 +23,173 @@
       position: relative;
       height: 100%;
       text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
-    .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+    .reveal h1, .reveal h2 {
       color: var(--tci-white);
       position: relative;
       z-index: 10;
-    }
-    
-    /* --- Grid Styles & Opening Animation --- */
-    .grid-lines-horizontal,
-    .grid-lines-vertical {
-        position: absolute;
-        top: 0; left: 0; width: 100%; height: 100%;
-        z-index: 0;
-    }
-    .grid-lines-horizontal {
-        background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-        background-size: 80px 80px;
-        transform: translateX(-100%);
-        transition: transform 1.5s ease-out 0.8s;
-    }
-    .grid-lines-vertical {
-        background-image: linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-        background-size: 80px 80px;
-        transform: translateY(-100%);
-        transition: transform 1.5s ease-out 0.5s;
-    }
-    .run-opening-animation .grid-lines-horizontal,
-    .run-opening-animation .grid-lines-vertical {
-        transform: translate(0, 0);
+      transition: opacity 0.5s ease-out;
     }
 
-    /* --- Centered Title Block for Slide 1 --- */
-    .title-block {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 100%;
-        transform: translate(-50%, -50%);
-        /* Set initial state for opening animation */
-        opacity: 0;
-        transition: opacity 1.5s ease-in 1.5s;
+    /* --- GLOBAL GRID: Two separate layers for independent animation --- */
+    .grid-lines-h, .grid-lines-v {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 0;
+      opacity: 0; /* Start hidden */
     }
-    .run-opening-animation .title-block {
-        opacity: 1;
+    .grid-lines-h {
+      background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+      background-size: 80px 80px;
+      transform: translateX(-100%);
+      transition: transform 1.5s ease-out 0.8s, opacity 0.5s linear 0.8s;
     }
-    
-    /* --- Logo Styles (Two States for auto-animate) --- */
+    .grid-lines-v {
+      background-image: linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+      background-size: 80px 80px;
+      transform: translateY(-100%);
+      transition: transform 1.5s ease-out 0.5s, opacity 0.5s linear 0.5s;
+    }
+    .run-opening-animation .grid-lines-h,
+    .run-opening-animation .grid-lines-v {
+      transform: translate(0, 0);
+      opacity: 1;
+    }
+
+    /* --- TITLE SLIDE LOGOS --- */
     .logo-container {
       display: flex;
       justify-content: center;
       align-items: center;
       margin-top: 40px;
+      position: relative;
+      z-index: 10;
+      opacity: 0;
+      transition: opacity 1s ease-in 1.5s; /* Fade in after grid */
     }
-    .logo-container .logo-image {
+    .run-opening-animation .logo-container {
+      opacity: 1;
+    }
+    .logo-image {
+      filter: brightness(0) invert(1);
       height: 150px;
       width: auto;
-      filter: brightness(0) invert(1);
     }
-    .logo-container .logo-separator {
+    .logo-separator {
       color: var(--tci-white);
       font-size: 80px;
       font-weight: 700;
       margin: 0 60px;
-      /* RESTORED: Give the 'x' its own animation */
       opacity: 0;
-      animation: spin-and-settle 2s ease-in-out 2s forwards;
+      animation-name: none; /* No animation by default */
+    }
+    .run-opening-animation .logo-separator {
+      animation: spin-and-settle 2s ease-in-out 1.8s forwards;
+    }
+    @keyframes spin-and-settle {
+      0%   { opacity: 0; transform: rotate(-180deg); }
+      70%  { opacity: 1; transform: rotate(380deg); }
+      85%  { transform: rotate(355deg); }
+      100% { opacity: 1; transform: rotate(360deg); }
     }
     
-    @keyframes spin-and-settle {
-        0%   { opacity: 0; transform: rotate(-180deg); }
-        70%  { opacity: 1; transform: rotate(380deg); }
-        85%  { transform: rotate(355deg); }
-        100% { opacity: 1; transform: rotate(360deg); }
+    /* --- EXIT ANIMATIONS (triggered by JS) --- */
+    .run-exit-animation .logo-separator {
+        animation: spin-out-reverse 1s ease-in forwards;
+    }
+    @keyframes spin-out-reverse {
+        from { opacity: 1; transform: rotate(360deg); }
+        to   { opacity: 0; transform: rotate(0deg); }
+    }
+    .run-exit-animation h1,
+    .run-exit-animation .logo-container {
+        opacity: 0;
     }
 
-    /* Modifier class for the corner state (on slide 2) */
-    .logo-container-corner {
+    /* --- CORNER LOGOS (on slide 2) --- */
+    .corner-logos {
       position: absolute;
-      top: 40px;
-      left: 40px;
-      z-index: 10;
+      top: 40px; left: 40px; z-index: 10;
       display: flex;
       flex-direction: column;
       align-items: flex-start;
     }
-    .logo-container-corner .logo-image {
-      height: 40px;
-    }
+    .corner-logos .logo-image { height: 40px; }
     
-    /* Navigation Arrow Fix */
-    .reveal .controls .controls-arrow {
-      border-color: var(--tci-white) !important;
-    }
+    /* --- Nav Arrow Fix --- */
+    .reveal .controls .controls-arrow { border-color: var(--tci-white) !important; }
   </style>
 </head>
 <body>
   <div class="reveal">
+    <div class="grid-lines-h"></div>
+    <div class="grid-lines-v"></div>
+    
     <div class="slides">
-      
-      <section data-auto-animate>
-        <div class="grid-lines-horizontal"></div>
-        <div class="grid-lines-vertical"></div>
-        
-        <div class="title-block">
-            <h1 data-id="title">Project Proposition</h1>
-            <div data-id="logo-area" class="logo-container">
-              <img data-id="tci-logo" src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
-              <span data-id="x-separator" class="logo-separator">x</span>
-              <img data-id="bb-logo" src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
-            </div>
+      <section>
+        <h1>Project Proposition</h1>
+        <div class="logo-container">
+          <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
+          <span class="logo-separator">x</span>
+          <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
         </div>
       </section>
 
-      <section data-auto-animate>
-        <div class="grid-lines-horizontal" style="transform:translate(0,0);"></div>
-        <div class="grid-lines-vertical" style="transform:translate(0,0);"></div>
-
-        <div data-id="logo-area" class="logo-container-corner">
-            <img data-id="tci-logo" src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
-            <img data-id="bb-logo" src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
+      <section>
+        <div class="corner-logos">
+          <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
+          <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
         </div>
-
         <h2>Agenda</h2>
         <p>Next, we'll build out the agenda or introduction slide here.</p>
       </section>
-      
     </div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
   <script>
     Reveal.initialize({
-        hash: true,
-        transition: 'slide',
-        autoAnimate: true
+      hash: true,
+      transition: 'slide'
     });
 
     // This triggers the full opening animation sequence
     setTimeout(function() {
-        document.body.classList.add('run-opening-animation');
+      document.body.classList.add('run-opening-animation');
     }, 200);
+
+    // This custom JS handles the exit animation BEFORE navigating
+    function exitAndNavigate() {
+      // Add the exit class to trigger CSS animations
+      document.body.classList.add('run-exit-animation');
+      
+      // Wait for the exit animations to finish (1s is enough)
+      setTimeout(() => {
+        Reveal.next();
+        // Clean up the class after we've navigated
+        document.body.classList.remove('run-exit-animation');
+      }, 1000);
+    }
+
+    // Hijack the 'next' navigation controls only when on the first slide
+    Reveal.on('slidetransitionend', event => {
+      // We are on the first slide (index 0)
+      if (Reveal.getIndices().h === 0) {
+        let nextArrow = document.querySelector('.navigate-right');
+        nextArrow.onclick = function(e) {
+          e.preventDefault();
+          exitAndNavigate();
+        };
+      } else {
+        // On all other slides, let the arrow behave normally
+        let nextArrow = document.querySelector('.navigate-right');
+        nextArrow.onclick = null;
+      }
+    });
+
   </script>
 </body>
 </html>
