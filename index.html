@@ -18,8 +18,6 @@
     }
     .reveal {
       font-family: 'Montserrat', sans-serif;
-      position: relative;
-      overflow: hidden;
       background-color: var(--tci-charcoal);
     }
     .reveal .slides {
@@ -27,94 +25,60 @@
       color: var(--tci-white);
       text-align: center;
     }
-    /* FIX: Added missing h3, h4 and section height */
-    .reveal .slides section {
-        position: relative;
-        height: 100%;
-    }
-    .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+    .reveal h1, .reveal h2 {
       color: var(--tci-white);
       text-transform: none;
       position: relative;
       z-index: 2;
-      transition: opacity 0.5s ease-out;
     }
-    /* FIX: Added logo container from previous versions */
-    .logo-container {
+    
+    /* NEW: This class will perfectly center the content on our title slide */
+    .center-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
+
+    /* --- Logo Styles --- */
+
+    /* This defines the style for the logos on the FIRST slide */
+    .logo-container-title {
         display: flex;
         justify-content: center;
         align-items: center;
         margin-top: 40px;
-        position: relative;
-        z-index: 2;
     }
-    /* FIX: Added logo image styles */
-    .logo-image {
+    .logo-container-title .logo-image {
         filter: brightness(0) invert(1);
         height: 150px;
         width: auto;
     }
-
-    /* grid animation */
-    .grid-lines-horizontal, .grid-lines-vertical {
-      position: absolute; top:0; left:0; width:100%; height:100%; z-index:0;
-    }
-    .grid-lines-horizontal {
-      background-image: linear-gradient(to bottom, rgba(255,255,255,0.1) 1px, transparent 1px);
-      background-size: 80px 80px;
-      transform: translateY(-100%);
-      transition: transform 2.5s ease-out;
-    }
-    .grid-lines-vertical {
-      background-image: linear-gradient(to right, rgba(255,255,255,0.1) 1px, transparent 1px);
-      background-size: 80px 80px;
-      transform: translateX(-100%);
-      transition: transform 2.5s ease-out 0.8s;
-    }
-    .run-animation .grid-lines-horizontal,
-    .run-animation .grid-lines-vertical {
-      transform: translate(0, 0);
+    .logo-container-title .logo-separator {
+        color: var(--tci-white);
+        font-size: 80px;
+        font-weight: 700;
+        margin: 0 60px;
     }
 
-    /* logo wrapper animates simply */
-    .logo-wrapper {
-      opacity: 0;
-      transform: scale(0.95);
-      transition: all 0.5s ease-out;
+    /* This defines the style for the logos on ALL OTHER slides */
+    .logo-container-corner {
+        position: absolute;
+        top: 40px;
+        left: 40px;
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
     }
-    .run-animation .logo-wrapper {
-      opacity: 1;
-      transform: scale(1);
+    .logo-container-corner .logo-image {
+        height: 40px; /* Smaller size */
+        width: auto;
+        filter: brightness(0) invert(1);
     }
-
-    /* X “spin” keyframes */
-    @keyframes spin-entry {
-      0%   { opacity: 0; transform: scale(0.95) rotate(0deg); }
-      20%  { opacity: 1; transform: scale(1)   rotate(360deg); }
-      40%  { transform: scale(1)   rotate(0deg); }
-      60%  { transform: scale(1)   rotate(-360deg); }
-      80%  { transform: scale(1)   rotate(0deg); }
-      100% { opacity: 1; transform: scale(1)   rotate(0deg); }
-    }
-
-    .logo-separator {
-      /* MODIFIED: Restored the visual styles for the 'x' */
-      color: var(--tci-white);
-      font-size: 80px;
-      font-weight: 700;
-      margin: 0 60px;
-      /* --- End of restored styles --- */
-      
-      display: inline-block;
-      opacity: 0;
-    }
-    .run-animation .logo-separator {
-      animation: spin-entry 2s ease-in-out forwards;
-    }
-    .exit-animation .logo-separator {
-      animation: spin-entry 2s ease-in-out reverse forwards;
-    }
-
+    /* The 'x' is not in the corner container, so it will fade out automatically */
+    
     /* white nav arrows */
     .reveal .controls .controls-arrow {
       border-color: var(--tci-white) !important;
@@ -123,82 +87,43 @@
 </head>
 <body>
   <div class="reveal">
-    <div class="grid-lines-horizontal"></div>
-    <div class="grid-lines-vertical"></div>
     <div class="slides">
-      <section>
-        <h1>Project Proposition</h1>
-        <div class="logo-container">
-          <div class="logo-wrapper">
-            <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png"
-                 alt="TCI Products Logo" class="logo-image">
-          </div>
-          <span class="logo-separator">x</span>
-          <div class="logo-wrapper">
-            <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg"
-                 alt="Black + Blum Logo" class="logo-image">
-          </div>
+      
+      <section data-auto-animate>
+        <div class="center-content">
+            <h1 data-id="title">Project Proposition</h1>
+            <div class="logo-container-title">
+              <img data-id="tci-logo" src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png"
+                   alt="TCI Products Logo" class="logo-image">
+              <span data-id="x-separator" class="logo-separator">x</span>
+              <img data-id="bb-logo" src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg"
+                   alt="Black + Blum Logo" class="logo-image">
+            </div>
         </div>
       </section>
-      <section>
+
+      <section data-auto-animate>
+        <div class="logo-container-corner">
+            <img data-id="tci-logo" src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png"
+                 alt="TCI Products Logo" class="logo-image">
+            <img data-id="bb-logo" src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg"
+                 alt="Black + Blum Logo" class="logo-image">
+        </div>
+
         <h2>Agenda</h2>
         <p>Next, we'll build out the agenda or introduction slide here.</p>
       </section>
+      
     </div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
   <script>
-    // 1. Initialize + entrance
-    Reveal.initialize({ hash: true, transition: 'slide', plugins: [] });
-    setTimeout(() => document.body.classList.add('run-animation'), 500);
-
-    // 2. Exit + reverse-spin then navigate
-    function exitAndNavigate(direction) {
-      document.body.classList.remove('run-animation');
-      document.body.classList.add('exit-animation');
-
-      // fade out title
-      const slide = document.querySelector('.slides section.present');
-      const title = slide.querySelector('h1, h2');
-      if (title) title.style.opacity = 0;
-
-      // wait for spin (2s) & fade (0.5s) ⇒ ~2s
-      setTimeout(() => {
-        if (direction === 'next') Reveal.next();
-        else                    Reveal.prev();
-
-        // clean up exit class
-        document.body.classList.remove('exit-animation');
-
-        // re-trigger entrance for revisits
-        setTimeout(() => {
-          document.body.classList.add('run-animation');
-          if (title) title.style.opacity = 1;
-        }, 100);
-      }, 2100);
-    }
-
-    // 3. Hook “next” arrow on slide 1
-    // MODIFIED: Added a null check for safety
-    document.querySelector('.controls .navigate-right')
-      ?.addEventListener('click', e => {
-        const { h, v } = Reveal.getIndices();
-        if (h === 0 && v === 0) {
-          e.preventDefault();
-          exitAndNavigate('next');
-        }
-      });
-
-    // 4. Also catch Right-Arrow / PageDown keys
-    document.addEventListener('keydown', e => {
-      if (['ArrowRight','PageDown'].includes(e.key)) {
-        const { h, v } = Reveal.getIndices();
-        if (h === 0 && v === 0 && !document.body.classList.contains('exit-animation')) { // Prevent double-trigger
-          e.preventDefault();
-          exitAndNavigate('next');
-        }
-      }
+    // MODIFIED: We enable autoAnimate and remove all the custom exit JS
+    Reveal.initialize({
+        hash: true,
+        transition: 'slide',
+        autoAnimate: true // This does all the magic for us
     });
   </script>
 </body>
