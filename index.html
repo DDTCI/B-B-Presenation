@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-t">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>TCI Culinary Proposition for Black + Blum</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reset.min.css">
@@ -163,41 +163,6 @@
     .corner-logos .logo-image { 
       height: 40px; 
     }
-
-    /* --- Restored Animated Arrow Styles --- */
-    .swipe-arrow-container {
-        position: absolute;
-        bottom: 30px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 25;
-    }
-
-    #swipe-arrow {
-        width: 60px;
-        height: 60px;
-        color: white;
-        filter: drop-shadow(0px 6px 4px rgba(0, 0, 0, 0.3));
-        animation: bounce-and-shadow 2.5s infinite ease-in-out;
-        transition: opacity 0.4s ease-out, transform 0.4s ease-in;
-    }
-
-    #swipe-arrow.vanish {
-        animation-play-state: paused; /* Stop the bounce */
-        transform: translateY(-80px);
-        opacity: 0;
-    }
-
-    @keyframes bounce-and-shadow {
-        0%, 100% {
-            transform: translateY(0);
-            filter: drop-shadow(0px 6px 4px rgba(0, 0, 0, 0.3));
-        }
-        50% {
-            transform: translateY(-20px);
-            filter: drop-shadow(0px 25px 8px rgba(0, 0, 0, 0.1));
-        }
-    }
   </style>
 </head>
 <body>
@@ -205,36 +170,27 @@
     <div class="grid-container" id="gridContainer"></div>
 
     <div class="slides">
-
       <section>
-        <section>
-          <div class="title-content">
-            <h1>Project Proposition</h1>
-            <div class="logo-container">
-              <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
-              <span class="logo-separator">x</span>
-              <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
-            </div>
-          </div>
-          
-          <div class="swipe-arrow-container">
-              <svg id="swipe-arrow" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
-                  <path d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
-              </svg>
-          </div>
-        </section>
-
-        <section>
-          <div class="corner-logos">
+        <div class="title-content">
+          <h1>Project Proposition</h1>
+          <div class="logo-container">
             <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
+            <span class="logo-separator">x</span>
             <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
           </div>
-          
-          <h1 style="color: white !important; font-size: 3rem !important; margin-bottom: 2rem !important; text-align: center !important; z-index: 15; position: relative;">The next great sustainability innovation from</h1>
-          
-          <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image" style="height: 140px;">
-          
-        </section>
+        </div>
+      </section>
+
+      <section>
+        <div class="corner-logos">
+          <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
+          <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
+        </div>
+        
+        <h1 style="color: white !important; font-size: 3rem !important; margin-bottom: 2rem !important; text-align: center !important; z-index: 15; position: relative;">The next great sustainability innovation from</h1>
+        
+        <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image" style="height: 140px;">
+        
       </section>
 
       <section class="agenda-slide">
@@ -253,9 +209,10 @@
     // Initialize Reveal.js
     Reveal.initialize({
       hash: false,
+      // Set the universal transition to 'slide' for a swipe effect
       transition: 'slide', 
       transitionSpeed: 'default',
-      backgroundTransition: 'none', // Set to none for cleaner slide transitions
+      backgroundTransition: 'none', // Set to none for a cleaner swipe
       fragments: true,
       controls: true,
       progress: true,
@@ -335,20 +292,6 @@
     window.addEventListener('resize', () => {
         const gridLines = createDynamicGrid();
         gridLines.forEach(line => line.classList.add('animate-in'));
-    });
-    
-    // Re-enabled JS to control the arrow animation
-    Reveal.addEventListener('slidechanged', function(event) {
-        const arrow = document.getElementById('swipe-arrow');
-        if (!arrow) return;
-
-        // When we move away from the first vertical slide (indexv=0), hide the arrow.
-        if (event.indexv > 0) {
-            arrow.classList.add('vanish');
-        } else {
-            // Otherwise, if we return to it, make sure it's visible.
-            arrow.classList.remove('vanish');
-        }
     });
   </script>
 </body>
