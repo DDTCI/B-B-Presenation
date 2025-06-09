@@ -20,10 +20,7 @@
       font-family: 'Montserrat', sans-serif;
       background-color: var(--tci-charcoal);
       position: relative; 
-      /* CORRECTION #1: Force overflow to be visible.
-        Reveal.js can cause containers to hide overflow, which clips our
-        off-screen lines. This ensures they are not clipped.
-      */
+      /* This rule is critical to prevent clipping the off-screen lines */
       overflow: visible !important; 
     }
 
@@ -56,12 +53,12 @@
     }
     
     .grid-line.animate-in {
-      /* CORRECTION #2: Increased opacity for better visibility */
-      opacity: 0.4;
+      /* You can adjust this opacity value for the final grid's brightness */
+      opacity: 0.2;
       transform: translate(0, 0) !important;
     }
 
-    /* --- SLIDE STYLING (UNRELATED TO GRID) --- */
+    /* --- SLIDE STYLING --- */
     .reveal .slides section {
       position: relative !important;
       height: 100vh !important;
@@ -105,6 +102,7 @@
       z-index: 15;
     }
 
+    /* --- TITLE SLIDE CONTENT --- */
     .title-content {
         opacity: 0;
         transition: opacity 1.5s ease-in 1.5s;
@@ -153,6 +151,7 @@
       100% { opacity: 1; transform: rotate(360deg); }
     }
 
+    /* --- CORNER LOGOS (on slides 2+) --- */
     .corner-logos {
       position: absolute;
       top: 40px; 
@@ -168,27 +167,7 @@
       height: 40px; 
     }
 
-    .sustainability-content {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 30px;
-      width: 100%;
-      max-width: 900px;
-      z-index: 15;
-      position: relative;
-      text-align: center;
-    }
-    
-    .sustainability-content h2 {
-      color: var(--tci-white) !important;
-      font-size: 3rem !important;
-      text-align: center;
-      margin: 0 0 2rem 0 !important;
-      line-height: 1.2;
-      font-family: 'Montserrat', sans-serif !important;
-    }
-
+    /* --- Brand Logo Placeholder --- */
     .brand-logo-placeholder {
       width: 300px; 
       height: 120px; 
@@ -207,22 +186,76 @@
 <body>
   <div class="reveal">
     <div class="grid-container" id="gridContainer"></div>
+
     <div class="slides">
       <section>
-          <h1>Test Slide</h1>
+        <div class="title-content">
+          <h1>Project Proposition</h1>
+          <div class="logo-container">
+            <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
+            <span class="logo-separator">x</span>
+            <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="corner-logos">
+          <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
+          <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
+        </div>
+        
+        <h1 style="color: white !important; font-size: 3rem !important; margin-bottom: 2rem !important; text-align: center !important; z-index: 15; position: relative;">The next great sustainability innovation from</h1>
+        
+        <div class="brand-logo-placeholder">
+          BLACK + BLUM LOGO
+        </div>
+      </section>
+
+      <section class="agenda-slide">
+        <div class="corner-logos">
+          <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
+          <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
+        </div>
+        <h2 class="fragment fade-in">Agenda</h2>
+        <p class="fragment fade-in">Next, we'll build out the agenda or introduction slide here.</p>
       </section>
     </div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
   <script>
-    Reveal.initialize({ /* your options */ });
+    // Initialize Reveal.js
+    Reveal.initialize({
+      hash: false,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      fragments: true,
+      controls: true,
+      progress: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      shuffle: false,
+      keyboard: true,
+      overview: true,
+      disableLayout: false,
+      mouseWheel: false,
+      hideInactiveCursor: true,
+      hideCursorTime: 5000,
+      previewLinks: false,
+      focusBodyOnPageVisibilityChange: true
+    });
+
+    // --- Dynamic Grid Animation System ---
 
     function createDynamicGrid() {
       const gridContainer = document.getElementById('gridContainer');
       if (!gridContainer) return []; // Safety check
-      gridContainer.innerHTML = ''; // Clear previous grid
-      
+      gridContainer.innerHTML = ''; // Clear previous grid on resize
+
       const gridSize = 60;
       const windowWidth = window.innerWidth;
       const windowHeight = window.innerHeight;
@@ -232,6 +265,7 @@
       
       const allLines = [];
       
+      // Create horizontal lines
       for (let i = 0; i <= horizontalLines; i++) {
         const line = document.createElement('div');
         line.className = 'grid-line horizontal';
@@ -243,6 +277,7 @@
         allLines.push(line);
       }
       
+      // Create vertical lines
       for (let i = 0; i <= verticalLines; i++) {
         const line = document.createElement('div');
         line.className = 'grid-line vertical';
@@ -253,22 +288,6 @@
         gridContainer.appendChild(line);
         allLines.push(line);
       }
-
-      /*
-        CORRECTION #3: A "super-debug" line.
-        This red line should appear immediately at the top. If you don't
-        see this, the entire container is hidden.
-      */
-      const debugLine = document.createElement('div');
-      debugLine.className = 'grid-line horizontal';
-      debugLine.style.top = '10px';
-      debugLine.style.left = '0';
-      debugLine.style.opacity = '1';
-      debugLine.style.backgroundColor = 'red';
-      debugLine.style.height = '3px';
-      debugLine.style.zIndex = '999';
-      // No transform, so it should be visible right away
-      gridContainer.appendChild(debugLine);
       
       return allLines;
     }
@@ -284,13 +303,19 @@
       });
     }
 
+    // Initialize grid and trigger animations on page load
     setTimeout(function() {
       document.body.classList.add('run-opening-animation');
       const gridLines = createDynamicGrid();
       animateGridLines(gridLines);
     }, 500);
 
-    window.addEventListener('resize', createDynamicGrid);
+    // Recreate grid on window resize (without animation)
+    window.addEventListener('resize', () => {
+        const gridLines = createDynamicGrid();
+        // Instantly show the lines in their final position
+        gridLines.forEach(line => line.classList.add('animate-in'));
+    });
   </script>
 </body>
 </html>
