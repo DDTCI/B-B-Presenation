@@ -164,6 +164,44 @@
     .corner-logos .logo-image { 
       height: 40px; 
     }
+    
+    /* --- NEW: Custom Animated Arrow Styles --- */
+    .swipe-arrow-container {
+        position: absolute;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 20;
+    }
+
+    #swipe-arrow {
+        width: 60px;
+        height: 60px;
+        color: white;
+        filter: drop-shadow(0px 6px 4px rgba(0, 0, 0, 0.3));
+        /* The bouncing animation */
+        animation: bounce-and-shadow 2.5s infinite ease-in-out;
+    }
+
+    /* This class is added by JS to make the arrow disappear */
+    #swipe-arrow.vanish {
+        animation: none; /* Stop the bounce */
+        transition: opacity 0.4s ease-out, transform 0.4s ease-in;
+        transform: translateY(-80px);
+        opacity: 0;
+    }
+
+    @keyframes bounce-and-shadow {
+        0%, 100% {
+            transform: translateY(0);
+            filter: drop-shadow(0px 6px 4px rgba(0, 0, 0, 0.3));
+        }
+        50% {
+            transform: translateY(-20px);
+            filter: drop-shadow(0px 25px 8px rgba(0, 0, 0, 0.1));
+        }
+    }
+
   </style>
 </head>
 <body>
@@ -182,9 +220,15 @@
               <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
             </div>
           </div>
+          
+          <div class="swipe-arrow-container">
+              <svg id="swipe-arrow" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-arrow-down-circle" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
+              </svg>
+          </div>
         </section>
 
-        <section>
+        <section data-transition="slide">
           <div class="corner-logos">
             <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
             <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
@@ -295,6 +339,21 @@
     window.addEventListener('resize', () => {
         const gridLines = createDynamicGrid();
         gridLines.forEach(line => line.classList.add('animate-in'));
+    });
+    
+    // --- NEW: JavaScript to control the arrow animation ---
+    Reveal.addEventListener('slidechanged', function(event) {
+        const arrow = document.getElementById('swipe-arrow');
+        if (!arrow) return;
+
+        // event.indexv is the vertical slide number.
+        // When we move from slide 0 to slide 1 vertically, hide arrow.
+        if (event.indexv > 0) {
+            arrow.classList.add('vanish');
+        } else {
+            // Otherwise, make sure it's visible.
+            arrow.classList.remove('vanish');
+        }
     });
   </script>
 </body>
