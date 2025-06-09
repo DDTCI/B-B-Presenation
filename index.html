@@ -117,45 +117,46 @@
 
         let introHasRun = false;
 
-        Reveal.addEventListener('ready', (event) => {
-            handleLogoVisibility(event);
-            handleIntroAnimations(event); 
-            document.querySelectorAll('.timeline-slide').forEach(initializeStraightTimeline);
-        });
-        Reveal.addEventListener('slidechanged', (event) => {
-            handleLogoVisibility(event);
-            handleSVGAnimations(event);
-        });
+     Reveal.addEventListener('ready', (event) => {
+    handleLogoVisibility(event);
+    handleAllTitleAnimations(event); 
+    initializeTimelines(); 
+});
+Reveal.addEventListener('slidechanged', (event) => {
+    handleLogoVisibility(event);
+    handleAllTitleAnimations(event);
+});
         window.addEventListener('resize', () => { if (introHasRun) animateGrid(); });
         
         function handleLogoVisibility(event) {
             const logos = document.querySelector('.global-logos');
             if (logos) { logos.style.display = (event.indexh === 0 && event.indexv === 0) ? 'none' : 'flex'; }
         }
-        function handleIntroAnimations(event) {
-            if (introHasRun || event.indexh !== 0 || event.indexv !== 0) return;
-            introHasRun = true;
-            const strokeEl = document.getElementById('title-stroke'), fillEl = document.getElementById('title-fill');
-            if (strokeEl && fillEl) {
-                strokeEl.style.animation = 'draw-in 2s ease forwards, fade-tail 1s ease 2.2s forwards';
-                fillEl.style.animation = 'show-fill 0.1s ease 2s forwards';
-            }
-            document.body.classList.add('run-opening-animation');
-            animateGrid();
+      function handleAllTitleAnimations(event) {
+    // This function runs whenever a slide is shown
+    const slide = event.currentSlide || Reveal.getCurrentSlide();
+
+    // Find if there's an element with the class ".animated-title" on the current slide
+    const animatedTitle = slide.querySelector('.animated-title');
+    
+    if (animatedTitle) {
+        const strokeEl = animatedTitle.querySelector('.anim-stroke');
+        const fillEl = animatedTitle.querySelector('.anim-fill');
+        
+        if (strokeEl && fillEl) {
+            // This resets the animation so it can play again if you revisit the slide
+            strokeEl.style.animation = 'none';
+            fillEl.style.animation = 'none';
+            
+            // This is a small trick to force the browser to apply the change
+            void strokeEl.offsetWidth;
+
+            // Re-apply the animation
+            strokeEl.style.animation = 'draw-in 2s ease forwards, fade-tail 1s ease 2.2s forwards';
+            fillEl.style.animation = 'show-fill 0.1s ease 2s forwards';
         }
-        function handleSVGAnimations(event) {
-            if (event.indexh === 0 && event.indexv === 0) return;
-            const { indexh: h, indexv: v } = event, slideKey = `${h},${v}`;
-            const animationMap = { '0,1': { strokeId: 'second-stroke', fillId: 'second-fill' }, '1,0': { strokeId: 'brief-stroke', fillId: 'brief-fill' }};
-            if (animationMap[slideKey]) {
-                const { strokeId, fillId } = animationMap[slideKey];
-                const strokeEl = document.getElementById(strokeId), fillEl = document.getElementById(fillId);
-                if (strokeEl && fillEl) {
-                    strokeEl.style.animation = 'draw-in 2s ease forwards, fade-tail 1s ease 2.2s forwards';
-                    fillEl.style.animation = 'show-fill 0.1s ease 2s forwards';
-                }
-            }
-        }
+    }
+}
 
         function initializeStraightTimeline(timelineSlide) {
             if (!timelineSlide) return;
