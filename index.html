@@ -165,7 +165,7 @@
       height: 40px; 
     }
     
-    /* --- NEW: Custom Animated Arrow Styles --- */
+    /* --- Custom Animated Arrow Styles --- */
     .swipe-arrow-container {
         position: absolute;
         bottom: 30px;
@@ -179,13 +179,11 @@
         height: 60px;
         color: white;
         filter: drop-shadow(0px 6px 4px rgba(0, 0, 0, 0.3));
-        /* The bouncing animation */
         animation: bounce-and-shadow 2.5s infinite ease-in-out;
     }
 
-    /* This class is added by JS to make the arrow disappear */
     #swipe-arrow.vanish {
-        animation: none; /* Stop the bounce */
+        animation: none;
         transition: opacity 0.4s ease-out, transform 0.4s ease-in;
         transform: translateY(-80px);
         opacity: 0;
@@ -217,144 +215,4 @@
             <div class="logo-container">
               <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
               <span class="logo-separator">x</span>
-              <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
-            </div>
-          </div>
-          
-          <div class="swipe-arrow-container">
-              <svg id="swipe-arrow" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-arrow-down-circle" viewBox="0 0 16 16">
-                  <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
-              </svg>
-          </div>
-        </section>
-
-        <section data-transition="slide">
-          <div class="corner-logos">
-            <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
-            <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
-          </div>
-          
-          <h1 style="color: white !important; font-size: 3rem !important; margin-bottom: 2rem !important; text-align: center !important; z-index: 15; position: relative;">The next great sustainability innovation from</h1>
-          
-          <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image" style="height: 140px;">
-          
-        </section>
-      </section>
-
-      <section class="agenda-slide">
-        <div class="corner-logos">
-          <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" alt="TCI Products Logo" class="logo-image">
-          <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" alt="Black + Blum Logo" class="logo-image">
-        </div>
-        <h2 class="fragment fade-in">Agenda</h2>
-        <p class="fragment fade-in">Next, we'll build out the agenda or introduction slide here.</p>
-      </section>
-    </div>
-  </div>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
-  <script>
-    // Initialize Reveal.js
-    Reveal.initialize({
-      hash: false,
-      transition: 'convex', 
-      transitionSpeed: 'default',
-      backgroundTransition: 'fade',
-      fragments: true,
-      controls: true,
-      progress: true,
-      center: true,
-      touch: true,
-      loop: false,
-      rtl: false,
-      shuffle: false,
-      keyboard: true,
-      overview: true,
-      disableLayout: false,
-      mouseWheel: false,
-      hideInactiveCursor: true,
-      hideCursorTime: 5000,
-      previewLinks: false,
-      focusBodyOnPageVisibilityChange: true
-    });
-
-    // --- Dynamic Grid Animation System ---
-
-    function createDynamicGrid() {
-      const gridContainer = document.getElementById('gridContainer');
-      if (!gridContainer) return [];
-      gridContainer.innerHTML = '';
-
-      const gridSize = 60;
-      const windowWidth = window.innerWidth;
-      const windowHeight = window.innerHeight;
-      
-      const horizontalLines = Math.ceil(windowHeight / gridSize);
-      const verticalLines = Math.ceil(windowWidth / gridSize);
-      
-      const allLines = [];
-      
-      for (let i = 0; i <= horizontalLines; i++) {
-        const line = document.createElement('div');
-        line.className = 'grid-line horizontal';
-        line.style.top = (i * gridSize) + 'px';
-        line.style.left = '0px';
-        const startPos = Math.random() < 0.5 ? '-100%' : '100%';
-        line.style.transform = `translateX(${startPos})`;
-        gridContainer.appendChild(line);
-        allLines.push(line);
-      }
-      
-      for (let i = 0; i <= verticalLines; i++) {
-        const line = document.createElement('div');
-        line.className = 'grid-line vertical';
-        line.style.left = (i * gridSize) + 'px';
-        line.style.top = '0px';
-        const startPos = Math.random() < 0.5 ? '-100%' : '100%';
-        line.style.transform = `translateY(${startPos})`;
-        gridContainer.appendChild(line);
-        allLines.push(line);
-      }
-      
-      return allLines;
-    }
-    
-    function animateGridLines(lines) {
-      const shuffledLines = [...lines].sort(() => Math.random() - 0.5);
-      
-      shuffledLines.forEach(line => {
-        const randomDelay = 100 + (Math.random() * 1400);
-        setTimeout(() => {
-          line.classList.add('animate-in');
-        }, randomDelay);
-      });
-    }
-
-    setTimeout(function() {
-      document.body.classList.add('run-opening-animation');
-      const gridLines = createDynamicGrid();
-      animateGridLines(gridLines);
-    }, 500);
-
-    window.addEventListener('resize', () => {
-        const gridLines = createDynamicGrid();
-        gridLines.forEach(line => line.classList.add('animate-in'));
-    });
-    
-    // --- NEW: JavaScript to control the arrow animation ---
-    Reveal.addEventListener('slidechanged', function(event) {
-        const arrow = document.getElementById('swipe-arrow');
-        if (!arrow) return;
-
-        // event.indexv is the vertical slide number.
-        // When we move from slide 0 to slide 1 vertically, hide arrow.
-        if (event.indexv > 0) {
-            arrow.classList.add('vanish');
-        } else {
-            // Otherwise, make sure it's visible.
-            arrow.classList.remove('vanish');
-        }
-    });
-  </script>
-</body>
-</html>
+              <img src="
