@@ -39,7 +39,6 @@
       position: absolute;
       background-color: white;
       opacity: 0;
-      /* MODIFIED: Added 'transform' to the transition for the slide-in effect. */
       transition: opacity 0.8s ease-in-out, transform 1.5s cubic-bezier(0.25, 1, 0.5, 1);
     }
     
@@ -54,9 +53,13 @@
     }
     
     .grid-line.animate-in {
-      opacity: 0.15; /* A more subtle final opacity */
-      /* MODIFIED: The final state of the transform, which triggers the animation. */
-      transform: translate(0, 0);
+      opacity: 0.15;
+      /*
+        CORRECTION: Added !important to the transform property.
+        This ensures the animation's final state overrides the initial
+        off-screen position set by the inline style in the JavaScript.
+      */
+      transform: translate(0, 0) !important;
     }
 
     /* --- SLIDE STYLING --- */
@@ -303,7 +306,6 @@
       const windowWidth = window.innerWidth;
       const windowHeight = window.innerHeight;
       
-      // Calculate number of lines needed
       const horizontalLines = Math.ceil(windowHeight / gridSize);
       const verticalLines = Math.ceil(windowWidth / gridSize);
       
@@ -316,7 +318,6 @@
         line.style.top = (i * gridSize) + 'px';
         line.style.left = '0px';
 
-        // NEW: Set initial off-screen position for a random slide-in direction
         const startPos = Math.random() < 0.5 ? '-100%' : '100%';
         line.style.transform = `translateX(${startPos})`;
         
@@ -331,7 +332,6 @@
         line.style.left = (i * gridSize) + 'px';
         line.style.top = '0px';
 
-        // NEW: Set initial off-screen position for a random slide-in direction
         const startPos = Math.random() < 0.5 ? '-100%' : '100%';
         line.style.transform = `translateY(${startPos})`;
 
@@ -343,11 +343,9 @@
     }
     
     function animateGridLines(lines) {
-      // Shuffle the lines array for random order
       const shuffledLines = [...lines].sort(() => Math.random() - 0.5);
       
       shuffledLines.forEach((line, index) => {
-        // Random delay between 0.1-1.5 seconds to stagger the animation
         const randomDelay = 100 + (Math.random() * 1400);
         
         setTimeout(() => {
@@ -360,7 +358,6 @@
     setTimeout(function() {
       document.body.classList.add('run-opening-animation');
       
-      // Create and animate grid lines
       const gridLines = createDynamicGrid();
       animateGridLines(gridLines);
     }, 500);
@@ -370,7 +367,6 @@
       const gridContainer = document.getElementById('gridContainer');
       gridContainer.innerHTML = '';
       const gridLines = createDynamicGrid();
-      // Immediately show all lines on resize (no animation needed)
       gridLines.forEach(line => line.classList.add('animate-in'));
     });
 
