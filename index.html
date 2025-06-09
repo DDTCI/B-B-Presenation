@@ -1,449 +1,225 @@
 <!doctype html>
-
 <html lang="en">
-
 <head>
-
-    <meta charset="utf-8">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-    <title>TCI Culinary Proposition for Black + Blum</title>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reset.min.css">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/black.css" id="theme">
-
-    <style>
-
-        :root {
-
-            --tci-white: #FFF;
-
-            --tci-charcoal: #1E1C1D;
-
-            --accent-color: #88c0d0;
-
-        }
-
-        html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; }
-
-        .reveal { font-family: 'Montserrat', sans-serif; background: var(--tci-charcoal); color: var(--tci-white); }
-
-        .global-logos { position: fixed; top: 40px; left: 40px; z-index: 100; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
-
-        .global-logos .logo-image { height: 40px; filter: brightness(0) invert(1); }
-
-        .grid-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; }
-
-        .grid-line { position: absolute; background: white; opacity: 0; transition: opacity .8s, transform 1.5s cubic-bezier(.25, 1, .5, 1); }
-
-        .grid-line.horizontal { width: 100vw; height: 2px; }
-
-        .grid-line.vertical { width: 2px; height: 100vh; }
-
-        .grid-line.animate-in { opacity: .2; transform: translate(0, 0) !important; }
-
-        .reveal .slides section { display: flex !important; flex-direction: column !important; justify-content: center !important; align-items: center !important; }
-
-        .reveal .slides section.agenda-slide { justify-content: flex-start !important; padding-top: 140px; }
-
-        .anim-fill { fill: var(--tci-white); opacity: 0; }
-
-        .anim-stroke { fill: none; stroke: var(--tci-white); stroke-width: 2; stroke-dasharray: 3100; stroke-dashoffset: -150; opacity: 1; }
-
-        @keyframes draw-in { to { stroke-dashoffset: 0; } }
-
-        @keyframes fade-tail { from { opacity: 1; } to { opacity: 0; } }
-
-        @keyframes show-fill { to { opacity: 1; } }
-
-        .title-content { position: relative; z-index: 20; display: flex; flex-direction: column; align-items: center; overflow: visible; transition: transform 0.8s ease-in-out; }
-
-        .logo-container { margin-top: 20px; display: flex; align-items: center; gap: 20px; }
-
-        .logo-image.large { filter: brightness(0) invert(1); height: 150px; width: auto; }
-
-        .logo-separator { font-size: 80px; font-weight: 700; opacity: 0; }
-
-        .run-opening-animation .logo-separator { animation: spin-and-settle 2s ease-in-out 0s forwards; }
-
-        @keyframes spin-and-settle { 0% { opacity: 0; transform: rotate(-180deg); } 70% { opacity: 1; transform: rotate(380deg); } 85% { transform: rotate(355deg); } 100% { opacity: 1; transform: rotate(360deg); } }
-
-        #slide-brief.has-fragments.fragment-visible .title-content { transform: translateY(-20vh); }
-
-        #slide-brief .text-block { width: 60%; margin-top: 2rem; font-size: 1.5rem; text-align: center; line-height: 1.5; }
-
-        .icon-slide .title-content { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
-
-        .icon-slide.present .title-content { opacity: 1; transform: translateY(0); }
-
-        .subheader { font-size: 1.5rem; font-weight: 300; margin-top: 0.5rem; opacity: 0.8; }
-
-        .timeline-slide { overflow: hidden; justify-content: flex-start !important; padding-top: 15vh; }
-
-        .timeline-container { display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1); }
-
-        .timeline-track { display: flex; align-items: center; justify-content: center; width: 90%; margin-bottom: 2rem; }
-
-        .timeline-logo { height: 60px; filter: brightness(0) invert(1); flex-shrink: 0; }
-
-        .timeline-wrapper { position: relative; flex-grow: 1; margin: 0 2rem; }
-
-        .timeline-line { height: 3px; background-color: var(--tci-white); width: 100%; }
-
-        .timeline-nodes { position: absolute; width: 100%; top: 50%; display: flex; justify-content: space-between; transform: translateY(-50%); }
-
-        .timeline-node { color: var(--tci-white); cursor: pointer; transition: all 0.3s ease; display: flex; justify-content: center; align-items: center; width: 60px; height: 60px; transform: translateX(-30px); background-color: var(--tci-charcoal); border-radius: 50%; }
-
-        .timeline-node svg { width: 48px; height: 48px; }
-
-        .timeline-node:hover, .timeline-node.active { color: var(--accent-color); transform: translateX(-30px) scale(1.1); }
-
-        .timeline-ball { position: absolute; top: 50%; left: 0; width: 16px; height: 16px; background-color: var(--tci-white); border-radius: 50%; transform: translate(-8px, -50%); transition: left 0.6s cubic-bezier(0.65, 0, 0.35, 1); }
-
-        .timeline-panels { position: relative; width: 80%; height: 320px; text-align: center; transition: opacity 0.3s ease; }
-
-        .timeline-panel { position: absolute; width: 100%; left: 0; top: 0; opacity: 0; pointer-events: none; transition: opacity 0.4s ease-in-out; }
-
-        .timeline-panel.active { opacity: 1; pointer-events: auto; }
-
-        .timeline-panel h3 { margin-bottom: 0.5rem; color: var(--accent-color); font-size: 2rem; }
-
-        .timeline-panel p { font-size: 1.2rem; }
-
-        .timeline-date { font-size: 1rem; opacity: 0.7; font-style: italic; margin-top: 0.5rem; height: 1.2rem; }
-
-        .timeline-details { opacity: 0; max-height: 0; overflow: hidden; transition: opacity 0.5s ease 0.2s, max-height 0.5s ease 0.2s; }
-
-        .timeline-panel.active .timeline-details { opacity: 1; max-height: 200px; }
-
-        .timeline-details h4 { margin-top: 1.5rem; text-transform: uppercase; letter-spacing: 0.1em; font-size: 1rem; color: var(--accent-color); opacity: 0.9; }
-
-        .timeline-details p { font-size: 1rem; line-height: 1.4; }
-
-        .drill-down-content { position: absolute; top: 50%; transform: translateY(-50%); left: 0; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; opacity: 0; transition: opacity 0.6s ease 0.4s; pointer-events: none; }
-
-        .drill-down-content h2 { font-size: 3rem; color: var(--accent-color); }
-
-        .drill-down-columns { display: flex; justify-content: center; gap: 5rem; width: 70%; margin-top: 2rem; }
-
-        .drill-down-column { flex: 1; text-align: left; }
-
-        .drill-down-column h4 { font-size: 1.5rem; }
-
-        .drill-down-column ul { list-style-type: disc; padding-left: 25px; }
-
-        .return-button { margin-top: 3rem; padding: 1rem 2rem; background: none; border: 2px solid var(--accent-color); color: var(--accent-color); font-size: 1.2rem; cursor: pointer; transition: all 0.3s ease; }
-
-        .return-button:hover { background-color: var(--accent-color); color: var(--tci-charcoal); }
-
-        .timeline-slide.is-drilled-down .timeline-container { transform: translateY(-30vh); }
-
-        .timeline-slide.is-drilled-down .timeline-panels { opacity: 0; pointer-events: none; }
-
-        .timeline-slide.is-drilled-down .drill-down-content { opacity: 1; pointer-events: auto; }
-
-    </style>
-
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TCI Culinary Proposition for Black + Blum</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reset.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/black.css" id="theme">
+    <style>
+        :root {
+            --tci-white: #FFF;
+            --tci-charcoal: #1E1C1D;
+            --accent-color: #88c0d0;
+        }
+        html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; }
+        .reveal { font-family: 'Montserrat', sans-serif; background: var(--tci-charcoal); color: var(--tci-white); }
+        .global-logos { position: fixed; top: 40px; left: 40px; z-index: 100; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+        .global-logos .logo-image { height: 40px; filter: brightness(0) invert(1); }
+        .grid-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; }
+        .grid-line { position: absolute; background: white; opacity: 0; transition: opacity .8s, transform 1.5s cubic-bezier(.25, 1, .5, 1); }
+        .grid-line.horizontal { width: 100vw; height: 2px; }
+        .grid-line.vertical { width: 2px; height: 100vh; }
+        .grid-line.animate-in { opacity: .2; transform: translate(0, 0) !important; }
+        .reveal .slides section { display: flex !important; flex-direction: column !important; justify-content: center !important; align-items: center !important; }
+        .reveal .slides section.agenda-slide { justify-content: flex-start !important; padding-top: 140px; }
+        .anim-fill { fill: var(--tci-white); opacity: 0; }
+        .anim-stroke { fill: none; stroke: var(--tci-white); stroke-width: 2; stroke-dasharray: 3100; stroke-dashoffset: -150; opacity: 1; }
+        @keyframes draw-in { to { stroke-dashoffset: 0; } }
+        @keyframes fade-tail { from { opacity: 1; } to { opacity: 0; } }
+        @keyframes show-fill { to { opacity: 1; } }
+        .title-content { position: relative; z-index: 20; display: flex; flex-direction: column; align-items: center; overflow: visible; transition: transform 0.8s ease-in-out; }
+        .logo-container { margin-top: 20px; display: flex; align-items: center; gap: 20px; }
+        .logo-image.large { filter: brightness(0) invert(1); height: 150px; width: auto; }
+        .logo-separator { font-size: 80px; font-weight: 700; opacity: 0; }
+        .run-opening-animation .logo-separator { animation: spin-and-settle 2s ease-in-out 0s forwards; }
+        @keyframes spin-and-settle { 0% { opacity: 0; transform: rotate(-180deg); } 70% { opacity: 1; transform: rotate(380deg); } 85% { transform: rotate(355deg); } 100% { opacity: 1; transform: rotate(360deg); } }
+        #slide-brief.has-fragments.fragment-visible .title-content { transform: translateY(-20vh); }
+        #slide-brief .text-block { width: 60%; margin-top: 2rem; font-size: 1.5rem; text-align: center; line-height: 1.5; }
+        .icon-slide .title-content { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+        .icon-slide.present .title-content { opacity: 1; transform: translateY(0); }
+        .subheader { font-size: 1.5rem; font-weight: 300; margin-top: 0.5rem; opacity: 0.8; }
+        .timeline-slide { overflow: hidden; justify-content: flex-start !important; padding-top: 15vh; }
+        .timeline-container { display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1); }
+        .timeline-track { display: flex; align-items: center; justify-content: center; width: 90%; margin-bottom: 2rem; }
+        .timeline-logo { height: 60px; filter: brightness(0) invert(1); flex-shrink: 0; }
+        .timeline-wrapper { position: relative; flex-grow: 1; margin: 0 2rem; }
+        .timeline-line { height: 3px; background-color: var(--tci-white); width: 100%; }
+        .timeline-nodes { position: absolute; width: 100%; top: 50%; display: flex; justify-content: space-between; transform: translateY(-50%); }
+        .timeline-node { color: var(--tci-white); cursor: pointer; transition: all 0.3s ease; display: flex; justify-content: center; align-items: center; width: 60px; height: 60px; transform: translateX(-30px); background-color: var(--tci-charcoal); border-radius: 50%; }
+        .timeline-node svg { width: 48px; height: 48px; }
+        .timeline-node:hover, .timeline-node.active { color: var(--accent-color); transform: translateX(-30px) scale(1.1); }
+        .timeline-ball { position: absolute; top: 50%; left: 0; width: 16px; height: 16px; background-color: var(--tci-white); border-radius: 50%; transform: translate(-8px, -50%); transition: left 0.6s cubic-bezier(0.65, 0, 0.35, 1); }
+        .timeline-panels { position: relative; width: 80%; height: 320px; text-align: center; transition: opacity 0.3s ease; }
+        .timeline-panel { position: absolute; width: 100%; left: 0; top: 0; opacity: 0; pointer-events: none; transition: opacity 0.4s ease-in-out; }
+        .timeline-panel.active { opacity: 1; pointer-events: auto; }
+        .timeline-panel h3 { margin-bottom: 0.5rem; color: var(--accent-color); font-size: 2rem; }
+        .timeline-panel p { font-size: 1.2rem; }
+        .timeline-date { font-size: 1rem; opacity: 0.7; font-style: italic; margin-top: 0.5rem; height: 1.2rem; }
+        .timeline-details { opacity: 0; max-height: 0; overflow: hidden; transition: opacity 0.5s ease 0.2s, max-height 0.5s ease 0.2s; }
+        .timeline-panel.active .timeline-details { opacity: 1; max-height: 200px; }
+        .timeline-details h4 { margin-top: 1.5rem; text-transform: uppercase; letter-spacing: 0.1em; font-size: 1rem; color: var(--accent-color); opacity: 0.9; }
+        .timeline-details p { font-size: 1rem; line-height: 1.4; }
+        .drill-down-content { position: absolute; top: 50%; transform: translateY(-50%); left: 0; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; opacity: 0; transition: opacity 0.6s ease 0.4s; pointer-events: none; }
+        .drill-down-content h2 { font-size: 3rem; color: var(--accent-color); }
+        .drill-down-columns { display: flex; justify-content: center; gap: 5rem; width: 70%; margin-top: 2rem; }
+        .drill-down-column { flex: 1; text-align: left; }
+        .drill-down-column h4 { font-size: 1.5rem; }
+        .drill-down-column ul { list-style-type: disc; padding-left: 25px; }
+        .return-button { margin-top: 3rem; padding: 1rem 2rem; background: none; border: 2px solid var(--accent-color); color: var(--accent-color); font-size: 1.2rem; cursor: pointer; transition: all 0.3s ease; }
+        .return-button:hover { background-color: var(--accent-color); color: var(--tci-charcoal); }
+        .timeline-slide.is-drilled-down .timeline-container { transform: translateY(-30vh); }
+        .timeline-slide.is-drilled-down .timeline-panels { opacity: 0; pointer-events: none; }
+        .timeline-slide.is-drilled-down .drill-down-content { opacity: 1; pointer-events: auto; }
+    </style>
 </head>
-
 <body>
-
-    <div class="reveal">
-
-        <div class="global-logos">
-
-            <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" class="logo-image" alt="TCI Logo">
-
-            <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" class="logo-image" alt="B+B Logo">
-
-        </div>
-
-        <div class="grid-container" id="gridContainer"></div>
-
-
-
-        <div class="slides">
-
-            <section><section><div class="title-content"><svg width="800" height="200" viewBox="0 0 800 200"><text id="title-fill" class="anim-fill" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Montserrat" font-weight="700" font-size="64">PROJECT PROPOSITION</text><text id="title-stroke" class="anim-stroke" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Montserrat" font-weight="700" font-size="64">PROJECT PROPOSITION</text></svg><div class="logo-container"><img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" class="logo-image large"><span class="logo-separator">x</span><img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" class="logo-image large"></div></div></section><section><div class="title-content"><svg width="800" height="200" viewBox="0 0 800 200"><text id="second-fill" class="anim-fill" x="50%" y="40%" dominant-baseline="middle" text-anchor="middle" font-family="Montserrat" font-size="40"><tspan x="50%" dy="0">THE NEXT GREAT</tspan><tspan x="50%" dy="1.2em">SUSTAINABILITY INNOVATION</tspan><tspan x="50%" dy="1.2em">FROM</tspan></text><text id="second-stroke" class="anim-stroke" x="50%" y="40%" dominant-baseline="middle" text-anchor="middle" font-family="Montserrat" font-size="40"><tspan x="50%" dy="0">THE NEXT GREAT</tspan><tspan x="50%" dy="1.2em">SUSTAINABILITY INNOVATION</tspan><tspan x="50%" dy="1.2em">FROM</tspan></text></svg><div class="logo-container"><img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" class="logo-image large"></div></div></section></section>
-
-            <section class="agenda-slide" id="slide-brief"><div class="title-content"><svg width="600" height="150" viewBox="-20 0 640 150"><text id="brief-fill" class="anim-fill" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Montserrat" font-size="120">THE BRIEF</text><text id="brief-stroke" class="anim-stroke" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Montserrat" font-size="120">THE BRIEF</text></svg></div><div class="text-block fragment fade-up"><p>Black + Blum lead in design, integrity and sustainability. You have identified an opportunity to apply all three to a silicone-based replacement for clingfilm and tin foil.</p><p style="margin-top:1rem;">TCI have been brought on board to determine viability. Key factors include:</p></div></section>
-
-            <section class="icon-slide"><div class="title-content"><svg width="192" height="192" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg><p style="font-size: 3rem; margin-top: 1.5rem;">Possibility</p><p class="subheader">Can it be done?</p></div></section>
-
-            <section class="icon-slide"><div class="title-content"><svg width="192" height="192" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg><p style="font-size: 3rem; margin-top: 1.5rem;">Durability</p><p class="subheader">Can it be done well?</p></div></section>
-
-            <section class="icon-slide"><div class="title-content"><svg width="192" height="192" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="1" y="4" width="22" height="16" rx="2" ry="2" /><line x1="1" y1="10" x2="23" y2="10" /><circle cx="12" cy="14" r="2" /></svg><p style="font-size: 3rem; margin-top: 1.5rem;">ROI</p><p class="subheader">Can it be done profitably?</p></div></section>
-
-            <section class="icon-slide"><div class="title-content"><svg width="192" height="192" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><polyline points="3 17 9 11 13 15 21 7" /><polyline points="14 7 21 7 21 14" /></svg><p style="font-size: 3rem; margin-top: 1.5rem;">Scalability</p><p class="subheader">Can it be done at volume?</p></div></section>
-
-
-
-            <section class="timeline-slide">
-
-                <div class="timeline-container">
-
-                    <div class="timeline-track"></div>
-
-                    <div class="timeline-panels"></div>
-
-                </div>
-
-                <div class="drill-down-content"></div>
-
-            </section>
-
-            
-
-            <section class="timeline-slide">
-
-                <h2 style="position: absolute; top: 5vh; font-size: 3rem;">Next Steps</h2>
-
-                <div class="timeline-container">
-
-                    <div class="timeline-track"></div>
-
-                    <div class="timeline-panels"></div>
-
-                </div>
-
-            </section>
-
-        </div> 
-
-    </div> 
-
-
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
-
-    <script>
-
-        Reveal.initialize({ transition: 'slide', backgroundTransition: 'none', center: true, controls: true, progress: true, fragments: true, navigationMode: 'linear' });
-
-
-
-        let introHasRun = false;
-
-
-
-        Reveal.addEventListener('ready', (event) => {
-
-            handleLogoVisibility(event);
-
-            handleIntroAnimations(event); 
-
-            document.querySelectorAll('.timeline-slide').forEach(initializeStraightTimeline);
-
-        });
-
-        Reveal.addEventListener('slidechanged', (event) => {
-
-            handleLogoVisibility(event);
-
-            handleSVGAnimations(event);
-
-        });
-
-        window.addEventListener('resize', () => { if (introHasRun) animateGrid(); });
-
-        
-
-        function handleLogoVisibility(event) {
-
-            const logos = document.querySelector('.global-logos');
-
-            if (logos) { logos.style.display = (event.indexh === 0 && event.indexv === 0) ? 'none' : 'flex'; }
-
-        }
-
-        function handleIntroAnimations(event) {
-
-            if (introHasRun || event.indexh !== 0 || event.indexv !== 0) return;
-
-            introHasRun = true;
-
-            const strokeEl = document.getElementById('title-stroke'), fillEl = document.getElementById('title-fill');
-
-            if (strokeEl && fillEl) {
-
-                strokeEl.style.animation = 'draw-in 2s ease forwards, fade-tail 1s ease 2.2s forwards';
-
-                fillEl.style.animation = 'show-fill 0.1s ease 2s forwards';
-
-            }
-
-            document.body.classList.add('run-opening-animation');
-
-            animateGrid();
-
-        }
-
-        function handleSVGAnimations(event) {
-
-            if (event.indexh === 0 && event.indexv === 0) return;
-
-            const { indexh: h, indexv: v } = event, slideKey = `${h},${v}`;
-
-            const animationMap = { '0,1': { strokeId: 'second-stroke', fillId: 'second-fill' }, '1,0': { strokeId: 'brief-stroke', fillId: 'brief-fill' }};
-
-            if (animationMap[slideKey]) {
-
-                const { strokeId, fillId } = animationMap[slideKey];
-
-                const strokeEl = document.getElementById(strokeId), fillEl = document.getElementById(fillId);
-
-                if (strokeEl && fillEl) {
-
-                    strokeEl.style.animation = 'draw-in 2s ease forwards, fade-tail 1s ease 2.2s forwards';
-
-                    fillEl.style.animation = 'show-fill 0.1s ease 2s forwards';
-
-                }
-
-            }
-
-        }
-
-
-
-        function initializeStraightTimeline(timelineSlide) {
-
-            if (!timelineSlide) return;
-
-
-
-            const timelineData = [
-
-                { id: 1, icon: '<path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline>', title: 'Briefing', desc: 'Understanding the needs and wants', obj: 'Define project scope and goals.', del: 'A comprehensive brief document.' },
-
-                { id: 2, icon: '<circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>', title: 'Proof of concept', desc: 'Is it actually possible?', obj: 'Validate the core concept technically.', del: 'A working functional prototype.' },
-
-                { id: 3, icon: '<path d="M9 18h6v-2.3c1.4-1.2 2-3 2-4.7 0-2.8-2.2-5-5-5S7 8.2 7 11c0 1.7.6 3.5 2 4.7z"></path><line x1="12" y1="22" x2="12" y2="18"></line>', title: 'R&D', desc: 'Improving and refinement', obj: 'Optimize materials and design.', del: 'Detailed R&D report.' },
-
-                { id: 4, icon: '<path d="M21.7 13.3a2.4 2.4 0 0 0-1.8-1.8l-6.2-1.7-1.7-6.2a2.4 2.4 0 0 0-3.6 0l-1.7 6.2-6.2 1.7a2.4 2.4 0 0 0 0 3.6l6.2 1.7 1.7 6.2a2.4 2.4 0 0 0 3.6 0l1.7-6.2 6.2-1.7a2.4 2.4 0 0 0 1.8-1.8z"></path><line x1="12" y1="3" x2="12" y2="21"></line><line x1="3" y1="12" x2="21" y2="12"></line>', title: 'Pre-Production', desc: 'Finalising methods', obj: 'Prepare for mass production.', del: 'Final manufacturing specs.' },
-
-                { id: 5, icon: '<circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>', title: 'Road To Market', desc: 'Manufacture, Distribution', obj: 'Launch the product successfully.', del: 'First batch shipped.' },
-
-                { id: 6, icon: '<polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline>', title: 'Scaling Up', desc: 'International rollout', obj: 'Expand market reach.', del: 'New international markets.' }
-
-            ];
-
-
-
-            const isMainTimeline = timelineSlide.querySelector('.drill-down-content'); // Only the first timeline has this
-
-            const slideIdPrefix = isMainTimeline ? 'main' : 'next';
-
-            
-
-            const trackContainer = timelineSlide.querySelector('.timeline-track');
-
-            const panelsContainer = timelineSlide.querySelector('.timeline-panels');
-
-            
-
-            trackContainer.innerHTML = `<img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" class="timeline-logo" alt="TCI Logo"><div class="timeline-wrapper"><div class="timeline-line"></div><div class="timeline-ball"></div><div class="timeline-nodes">${timelineData.map(item => `<div class="timeline-node" id="${slideIdPrefix}-node-${item.id}" data-target="${slideIdPrefix}-panel-${item.id}"><svg viewBox="0 0 24 24"><title>Phase ${item.id}: ${item.title}</title>${item.icon}</svg></div>`).join('')}</div></div><img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" class="timeline-logo" alt="B+B Logo">`;
-
-            panelsContainer.innerHTML = timelineData.map(item => `<div class="timeline-panel" id="${slideIdPrefix}-panel-${item.id}"><h3>${isMainTimeline ? `Phase ${item.id}:` : ''} ${item.title}</h3><p>${item.desc}</p><p class="timeline-date">&nbsp;</p><div class="timeline-details"><h4>Objectives</h4><p>${item.obj}</p><h4>Deliverables</h4><p>${item.del}</p></div></div>`).join('');
-
-            
-
-            if(isMainTimeline) {
-
-                const drillDownContainer = timelineSlide.querySelector('.drill-down-content');
-
-                drillDownContainer.innerHTML = `<h2>Where we're at</h2><div class="drill-down-columns"><div class="drill-down-column"><h4>Current Status</h4><ul><li>Initial viability confirmed.</li><li>Material sourcing underway.</li><li>Preliminary cost analysis complete.</li></ul></div><div class="drill-down-column"><h4>Next Steps</h4><ul><li>Finalize material composition.</li><li>Prototype testing.</li><li>Develop production plan.</li></ul></div></div><button class="return-button">Return to Timeline</button>`;
-
-            }
-
-
-
-            const nodes = timelineSlide.querySelectorAll('.timeline-node');
-
-            const ball = timelineSlide.querySelector('.timeline-ball');
-
-            
-
-            function activateNode(node) {
-
-                if (!node || (isMainTimeline && timelineSlide.classList.contains('is-drilled-down'))) return; 
-
-                nodes.forEach(n => n.classList.remove('active'));
-
-                timelineSlide.querySelectorAll('.timeline-panel').forEach(p => p.classList.remove('active'));
-
-                node.classList.add('active');
-
-                document.getElementById(node.dataset.target).classList.add('active');
-
-                ball.style.left = `${node.offsetLeft + (node.offsetWidth / 2)}px`;
-
-            }
-
-
-
-            nodes.forEach(node => {
-
-                node.querySelectorAll('path, line, circle, polyline, rect').forEach(shape => { shape.setAttribute('fill', 'none'); shape.setAttribute('stroke', 'currentColor'); shape.setAttribute('stroke-width', '1.5'); });
-
-                node.addEventListener('click', (e) => {
-
-                    const clickedNode = e.currentTarget;
-
-                    if (isMainTimeline && clickedNode.id === 'main-node-2') timelineSlide.classList.add('is-drilled-down');
-
-                    activateNode(clickedNode);
-
-                });
-
-            });
-
-
-
-            if (isMainTimeline) {
-
-                const returnButton = timelineSlide.querySelector('.return-button');
-
-                if (returnButton) {
-
-                    returnButton.addEventListener('click', () => {
-
-                        timelineSlide.classList.remove('is-drilled-down');
-
-                        const phase3Node = timelineSlide.querySelector('#main-node-3');
-
-                        if(phase3Node) setTimeout(() => activateNode(phase3Node), 50);
-
-                    });
-
-                }
-
-            }
-
-            
-
-            if (nodes.length > 0) activateNode(nodes[0]);
-
-        }
-
-        
-
-        function createGrid() { const container = document.getElementById('gridContainer'); if (!container) return; container.innerHTML = ''; const lines = []; const size = 60; const cols = Math.ceil(window.innerWidth / size); const rows = Math.ceil(window.innerHeight / size); for (let y = 0; y <= rows; y++) { const l = document.createElement('div'); l.className = 'grid-line horizontal'; l.style.top = `${y * size}px`; l.style.transform = `translateX(${Math.random() < 0.5 ? '-100%' : '100%'})`; container.appendChild(l); lines.push(l); } for (let x = 0; x <= cols; x++) { const l = document.createElement('div'); l.className = 'grid-line vertical'; l.style.left = `${x * size}px`; l.style.transform = `translateY(${Math.random() < 0.5 ? '-100%' : '100%'})`; container.appendChild(l); lines.push(l); } return lines; }
-
-        function animateGrid() { const lines = createGrid(); lines.sort(() => Math.random() - 0.5).forEach(line => { setTimeout(() => line.classList.add('animate-in'), 100 + Math.random() * 1400); }); }
-
-    </script>
-
+    <div class="reveal">
+        <div class="global-logos">
+            <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" class="logo-image" alt="TCI Logo">
+            <img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" class="logo-image" alt="B+B Logo">
+        </div>
+        <div class="grid-container" id="gridContainer"></div>
+
+        <div class="slides">
+            <section><section><div class="title-content"><svg width="800" height="200" viewBox="0 0 800 200"><text id="title-fill" class="anim-fill" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Montserrat" font-weight="700" font-size="64">PROJECT PROPOSITION</text><text id="title-stroke" class="anim-stroke" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Montserrat" font-weight="700" font-size="64">PROJECT PROPOSITION</text></svg><div class="logo-container"><img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" class="logo-image large"><span class="logo-separator">x</span><img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" class="logo-image large"></div></div></section><section><div class="title-content"><svg width="800" height="200" viewBox="0 0 800 200"><text id="second-fill" class="anim-fill" x="50%" y="40%" dominant-baseline="middle" text-anchor="middle" font-family="Montserrat" font-size="40"><tspan x="50%" dy="0">THE NEXT GREAT</tspan><tspan x="50%" dy="1.2em">SUSTAINABILITY INNOVATION</tspan><tspan x="50%" dy="1.2em">FROM</tspan></text><text id="second-stroke" class="anim-stroke" x="50%" y="40%" dominant-baseline="middle" text-anchor="middle" font-family="Montserrat" font-size="40"><tspan x="50%" dy="0">THE NEXT GREAT</tspan><tspan x="50%" dy="1.2em">SUSTAINABILITY INNOVATION</tspan><tspan x="50%" dy="1.2em">FROM</tspan></text></svg><div class="logo-container"><img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" class="logo-image large"></div></div></section></section>
+            <section class="agenda-slide" id="slide-brief"><div class="title-content"><svg width="600" height="150" viewBox="-20 0 640 150"><text id="brief-fill" class="anim-fill" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Montserrat" font-size="120">THE BRIEF</text><text id="brief-stroke" class="anim-stroke" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Montserrat" font-size="120">THE BRIEF</text></svg></div><div class="text-block fragment fade-up"><p>Black + Blum lead in design, integrity and sustainability. You have identified an opportunity to apply all three to a silicone-based replacement for clingfilm and tin foil.</p><p style="margin-top:1rem;">TCI have been brought on board to determine viability. Key factors include:</p></div></section>
+            <section class="icon-slide"><div class="title-content"><svg width="192" height="192" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg><p style="font-size: 3rem; margin-top: 1.5rem;">Possibility</p><p class="subheader">Can it be done?</p></div></section>
+            <section class="icon-slide"><div class="title-content"><svg width="192" height="192" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg><p style="font-size: 3rem; margin-top: 1.5rem;">Durability</p><p class="subheader">Can it be done well?</p></div></section>
+            <section class="icon-slide"><div class="title-content"><svg width="192" height="192" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="1" y="4" width="22" height="16" rx="2" ry="2" /><line x1="1" y1="10" x2="23" y2="10" /><circle cx="12" cy="14" r="2" /></svg><p style="font-size: 3rem; margin-top: 1.5rem;">ROI</p><p class="subheader">Can it be done profitably?</p></div></section>
+            <section class="icon-slide"><div class="title-content"><svg width="192" height="192" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><polyline points="3 17 9 11 13 15 21 7" /><polyline points="14 7 21 7 21 14" /></svg><p style="font-size: 3rem; margin-top: 1.5rem;">Scalability</p><p class="subheader">Can it be done at volume?</p></div></section>
+
+            <section class="timeline-slide">
+                <div class="timeline-container">
+                    <div class="timeline-track"></div>
+                    <div class="timeline-panels"></div>
+                </div>
+                <div class="drill-down-content"></div>
+            </section>
+            
+            <section class="timeline-slide">
+                <h2 style="position: absolute; top: 5vh; font-size: 3rem;">Next Steps</h2>
+                <div class="timeline-container">
+                    <div class="timeline-track"></div>
+                    <div class="timeline-panels"></div>
+                </div>
+            </section>
+        </div> 
+    </div> 
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
+    <script>
+        Reveal.initialize({ transition: 'slide', backgroundTransition: 'none', center: true, controls: true, progress: true, fragments: true, navigationMode: 'linear' });
+
+        let introHasRun = false;
+
+        Reveal.addEventListener('ready', (event) => {
+            handleLogoVisibility(event);
+            handleIntroAnimations(event); 
+            document.querySelectorAll('.timeline-slide').forEach(initializeStraightTimeline);
+        });
+        Reveal.addEventListener('slidechanged', (event) => {
+            handleLogoVisibility(event);
+            handleSVGAnimations(event);
+        });
+        window.addEventListener('resize', () => { if (introHasRun) animateGrid(); });
+        
+        function handleLogoVisibility(event) {
+            const logos = document.querySelector('.global-logos');
+            if (logos) { logos.style.display = (event.indexh === 0 && event.indexv === 0) ? 'none' : 'flex'; }
+        }
+        function handleIntroAnimations(event) {
+            if (introHasRun || event.indexh !== 0 || event.indexv !== 0) return;
+            introHasRun = true;
+            const strokeEl = document.getElementById('title-stroke'), fillEl = document.getElementById('title-fill');
+            if (strokeEl && fillEl) {
+                strokeEl.style.animation = 'draw-in 2s ease forwards, fade-tail 1s ease 2.2s forwards';
+                fillEl.style.animation = 'show-fill 0.1s ease 2s forwards';
+            }
+            document.body.classList.add('run-opening-animation');
+            animateGrid();
+        }
+        function handleSVGAnimations(event) {
+            if (event.indexh === 0 && event.indexv === 0) return;
+            const { indexh: h, indexv: v } = event, slideKey = `${h},${v}`;
+            const animationMap = { '0,1': { strokeId: 'second-stroke', fillId: 'second-fill' }, '1,0': { strokeId: 'brief-stroke', fillId: 'brief-fill' }};
+            if (animationMap[slideKey]) {
+                const { strokeId, fillId } = animationMap[slideKey];
+                const strokeEl = document.getElementById(strokeId), fillEl = document.getElementById(fillId);
+                if (strokeEl && fillEl) {
+                    strokeEl.style.animation = 'draw-in 2s ease forwards, fade-tail 1s ease 2.2s forwards';
+                    fillEl.style.animation = 'show-fill 0.1s ease 2s forwards';
+                }
+            }
+        }
+
+        function initializeStraightTimeline(timelineSlide) {
+            if (!timelineSlide) return;
+
+            const timelineData = [
+                { id: 1, icon: '<path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline>', title: 'Briefing', desc: 'Understanding the needs and wants', obj: 'Define project scope and goals.', del: 'A comprehensive brief document.' },
+                { id: 2, icon: '<circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>', title: 'Proof of concept', desc: 'Is it actually possible?', obj: 'Validate the core concept technically.', del: 'A working functional prototype.' },
+                { id: 3, icon: '<path d="M9 18h6v-2.3c1.4-1.2 2-3 2-4.7 0-2.8-2.2-5-5-5S7 8.2 7 11c0 1.7.6 3.5 2 4.7z"></path><line x1="12" y1="22" x2="12" y2="18"></line>', title: 'R&D', desc: 'Improving and refinement', obj: 'Optimize materials and design.', del: 'Detailed R&D report.' },
+                { id: 4, icon: '<path d="M21.7 13.3a2.4 2.4 0 0 0-1.8-1.8l-6.2-1.7-1.7-6.2a2.4 2.4 0 0 0-3.6 0l-1.7 6.2-6.2 1.7a2.4 2.4 0 0 0 0 3.6l6.2 1.7 1.7 6.2a2.4 2.4 0 0 0 3.6 0l1.7-6.2 6.2-1.7a2.4 2.4 0 0 0 1.8-1.8z"></path><line x1="12" y1="3" x2="12" y2="21"></line><line x1="3" y1="12" x2="21" y2="12"></line>', title: 'Pre-Production', desc: 'Finalising methods', obj: 'Prepare for mass production.', del: 'Final manufacturing specs.' },
+                { id: 5, icon: '<circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>', title: 'Road To Market', desc: 'Manufacture, Distribution', obj: 'Launch the product successfully.', del: 'First batch shipped.' },
+                { id: 6, icon: '<polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline>', title: 'Scaling Up', desc: 'International rollout', obj: 'Expand market reach.', del: 'New international markets.' }
+            ];
+
+            const isMainTimeline = timelineSlide.querySelector('.drill-down-content'); // Only the first timeline has this
+            const slideIdPrefix = isMainTimeline ? 'main' : 'next';
+            
+            const trackContainer = timelineSlide.querySelector('.timeline-track');
+            const panelsContainer = timelineSlide.querySelector('.timeline-panels');
+            
+            trackContainer.innerHTML = `<img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/TCI_Products_Logo.png" class="timeline-logo" alt="TCI Logo"><div class="timeline-wrapper"><div class="timeline-line"></div><div class="timeline-ball"></div><div class="timeline-nodes">${timelineData.map(item => `<div class="timeline-node" id="${slideIdPrefix}-node-${item.id}" data-target="${slideIdPrefix}-panel-${item.id}"><svg viewBox="0 0 24 24"><title>Phase ${item.id}: ${item.title}</title>${item.icon}</svg></div>`).join('')}</div></div><img src="https://raw.githubusercontent.com/DDTCI/B-B-Presenation/main/b-b-main-logo.svg" class="timeline-logo" alt="B+B Logo">`;
+            panelsContainer.innerHTML = timelineData.map(item => `<div class="timeline-panel" id="${slideIdPrefix}-panel-${item.id}"><h3>${isMainTimeline ? `Phase ${item.id}:` : ''} ${item.title}</h3><p>${item.desc}</p><p class="timeline-date">&nbsp;</p><div class="timeline-details"><h4>Objectives</h4><p>${item.obj}</p><h4>Deliverables</h4><p>${item.del}</p></div></div>`).join('');
+            
+            if(isMainTimeline) {
+                const drillDownContainer = timelineSlide.querySelector('.drill-down-content');
+                drillDownContainer.innerHTML = `<h2>Where we're at</h2><div class="drill-down-columns"><div class="drill-down-column"><h4>Current Status</h4><ul><li>Initial viability confirmed.</li><li>Material sourcing underway.</li><li>Preliminary cost analysis complete.</li></ul></div><div class="drill-down-column"><h4>Next Steps</h4><ul><li>Finalize material composition.</li><li>Prototype testing.</li><li>Develop production plan.</li></ul></div></div><button class="return-button">Return to Timeline</button>`;
+            }
+
+            const nodes = timelineSlide.querySelectorAll('.timeline-node');
+            const ball = timelineSlide.querySelector('.timeline-ball');
+            
+            function activateNode(node) {
+                if (!node || (isMainTimeline && timelineSlide.classList.contains('is-drilled-down'))) return; 
+                nodes.forEach(n => n.classList.remove('active'));
+                timelineSlide.querySelectorAll('.timeline-panel').forEach(p => p.classList.remove('active'));
+                node.classList.add('active');
+                document.getElementById(node.dataset.target).classList.add('active');
+                ball.style.left = `${node.offsetLeft + (node.offsetWidth / 2)}px`;
+            }
+
+            nodes.forEach(node => {
+                node.querySelectorAll('path, line, circle, polyline, rect').forEach(shape => { shape.setAttribute('fill', 'none'); shape.setAttribute('stroke', 'currentColor'); shape.setAttribute('stroke-width', '1.5'); });
+                node.addEventListener('click', (e) => {
+                    const clickedNode = e.currentTarget;
+                    if (isMainTimeline && clickedNode.id === 'main-node-2') timelineSlide.classList.add('is-drilled-down');
+                    activateNode(clickedNode);
+                });
+            });
+
+            if (isMainTimeline) {
+                const returnButton = timelineSlide.querySelector('.return-button');
+                if (returnButton) {
+                    returnButton.addEventListener('click', () => {
+                        timelineSlide.classList.remove('is-drilled-down');
+                        const phase3Node = timelineSlide.querySelector('#main-node-3');
+                        if(phase3Node) setTimeout(() => activateNode(phase3Node), 50);
+                    });
+                }
+            }
+            
+            if (nodes.length > 0) activateNode(nodes[0]);
+        }
+        
+        function createGrid() { const container = document.getElementById('gridContainer'); if (!container) return; container.innerHTML = ''; const lines = []; const size = 60; const cols = Math.ceil(window.innerWidth / size); const rows = Math.ceil(window.innerHeight / size); for (let y = 0; y <= rows; y++) { const l = document.createElement('div'); l.className = 'grid-line horizontal'; l.style.top = `${y * size}px`; l.style.transform = `translateX(${Math.random() < 0.5 ? '-100%' : '100%'})`; container.appendChild(l); lines.push(l); } for (let x = 0; x <= cols; x++) { const l = document.createElement('div'); l.className = 'grid-line vertical'; l.style.left = `${x * size}px`; l.style.transform = `translateY(${Math.random() < 0.5 ? '-100%' : '100%'})`; container.appendChild(l); lines.push(l); } return lines; }
+        function animateGrid() { const lines = createGrid(); lines.sort(() => Math.random() - 0.5).forEach(line => { setTimeout(() => line.classList.add('animate-in'), 100 + Math.random() * 1400); }); }
+    </script>
 </body>
-
 </html>
