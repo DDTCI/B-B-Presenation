@@ -20,7 +20,6 @@
       font-family: 'Montserrat', sans-serif;
       background-color: var(--tci-charcoal);
       position: relative; 
-      /* This rule is critical to prevent clipping the off-screen lines */
       overflow: visible !important; 
     }
 
@@ -53,7 +52,6 @@
     }
     
     .grid-line.animate-in {
-      /* You can adjust this opacity value for the final grid's brightness */
       opacity: 0.2;
       transform: translate(0, 0) !important;
     }
@@ -166,21 +164,6 @@
     .corner-logos .logo-image { 
       height: 40px; 
     }
-
-    /* --- Brand Logo Placeholder (No longer used) --- */
-    .brand-logo-placeholder {
-      width: 300px; 
-      height: 120px; 
-      border: 2px solid white; 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      color: white; 
-      font-size: 1.2rem; 
-      text-align: center;
-      z-index: 15;
-      position: relative;
-    }
   </style>
 </head>
 <body>
@@ -227,7 +210,7 @@
     // Initialize Reveal.js
     Reveal.initialize({
       hash: false,
-      transition: 'slide',
+      transition: 'convex', // <-- This value has been changed
       transitionSpeed: 'default',
       backgroundTransition: 'fade',
       fragments: true,
@@ -252,8 +235,8 @@
 
     function createDynamicGrid() {
       const gridContainer = document.getElementById('gridContainer');
-      if (!gridContainer) return []; // Safety check
-      gridContainer.innerHTML = ''; // Clear previous grid on resize
+      if (!gridContainer) return [];
+      gridContainer.innerHTML = '';
 
       const gridSize = 60;
       const windowWidth = window.innerWidth;
@@ -264,7 +247,6 @@
       
       const allLines = [];
       
-      // Create horizontal lines
       for (let i = 0; i <= horizontalLines; i++) {
         const line = document.createElement('div');
         line.className = 'grid-line horizontal';
@@ -276,7 +258,6 @@
         allLines.push(line);
       }
       
-      // Create vertical lines
       for (let i = 0; i <= verticalLines; i++) {
         const line = document.createElement('div');
         line.className = 'grid-line vertical';
@@ -302,17 +283,14 @@
       });
     }
 
-    // Initialize grid and trigger animations on page load
     setTimeout(function() {
       document.body.classList.add('run-opening-animation');
       const gridLines = createDynamicGrid();
       animateGridLines(gridLines);
     }, 500);
 
-    // Recreate grid on window resize (without animation)
     window.addEventListener('resize', () => {
         const gridLines = createDynamicGrid();
-        // Instantly show the lines in their final position
         gridLines.forEach(line => line.classList.add('animate-in'));
     });
   </script>
