@@ -133,18 +133,24 @@ Reveal.addEventListener('slidechanged', (event) => {
             if (logos) { logos.style.display = (event.indexh === 0 && event.indexv === 0) ? 'none' : 'flex'; }
         }
       function handleAllTitleAnimations(event) {
-    // This function runs whenever a slide is shown
     const slide = event.currentSlide || Reveal.getCurrentSlide();
 
-    // Find if there's an element with the class ".animated-title" on the current slide
-    const animatedTitle = slide.querySelector('.animated-title');
-    
-    if (animatedTitle) {
-        const strokeEl = animatedTitle.querySelector('.anim-stroke');
-        const fillEl = animatedTitle.querySelector('.anim-fill');
+    // The animated title can either be the slide itself or an element inside it.
+    // This new logic correctly finds it in both cases.
+    let animatedTitleContainer = null;
+    if (slide.classList.contains('animated-title')) {
+        animatedTitleContainer = slide;
+    } else {
+        animatedTitleContainer = slide.querySelector('.animated-title');
+    }
+
+    if (animatedTitleContainer) {
+        // Now find the stroke and fill elements within the correct container
+        const strokeEl = animatedTitleContainer.querySelector('.anim-stroke');
+        const fillEl = animatedTitleContainer.querySelector('.anim-fill');
         
         if (strokeEl && fillEl) {
-            // This resets the animation so it can play again if you revisit the slide
+            // This resets the animation so it can play again if you revisit a slide
             strokeEl.style.animation = 'none';
             fillEl.style.animation = 'none';
             
